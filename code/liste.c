@@ -15,7 +15,7 @@ Fonctions utile sur les listes.
 
 struct elem{
   struct elem *suivant; /*pointeur vers l'element suivant*/
-  struct elem *precendent; /*pointeur vers l'element precedent*/
+  struct elem *precedent; /*pointeur vers l'element precedent*/
   void *val; /*pointeur vers les donnees de chaque element*/
 };
 typedef struct elem elem;
@@ -70,14 +70,14 @@ liste insere_apres(liste previous, void *valeur){
  */
 
 liste inserer_avant (liste next, void *valeur){
-  return inserer_apres(next->precedent, valeur);
+  return insere_apres(next->precedent, valeur);
 }
 
 /*est_tete (l) permet de teste si un element est la tete de la liste
  *retourne n =/= 0 si c'est le cas, 0 sinon*/
 
 int est_tete(liste l){
-  retunr l->val == NULL ; /*la valeur est NULL pour la tete*/
+  return (l->val == NULL) ; /*la valeur est NULL pour la tete*/
 }
 
 /*supprimer_element (l) supprime un element de la liste
@@ -114,7 +114,7 @@ liste vide_liste(liste l){
 */
 
 int detruire_liste(liste l){
-  liste tmp = vider_liste(l);
+  liste tmp = vide_liste(l);
   if (tmp==NULL)
     return 0;
   free (l);
