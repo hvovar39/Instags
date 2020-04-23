@@ -108,6 +108,7 @@ liste vide_liste(liste l){
   return l;
 }
 
+
 /*detruire_liste supprime tous les element d'une liste et sa tete
  *l pointe vers la tete de la liste
  *retourne 1 si la suppression à eu lieu, 0 sinon 
@@ -119,6 +120,26 @@ int detruire_liste(liste l){
     return 0;
   free (l);
   return 1;
+}
+
+/*fusinne les deux liste l et p et retourne la liste definitive*/
+
+liste fusionner(liste l, liste p){
+  if ( est_vide (l))
+    return p;
+  else if (est_vide (p))
+    return l;
+  else{
+    liste debut = p -> suivant;
+    liste fin = p -> precedent;
+    l -> precedent -> suivant = debut;
+    l -> precedent = fin;
+    fin -> suivant = l;
+    debut -> precedent = l;
+    if (! detruire_liste (p))
+      return NULL;
+  }
+  return l;
 }
 
 /*valeur(l) retourne la valeur de l'element l*/

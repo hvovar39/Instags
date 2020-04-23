@@ -1,6 +1,9 @@
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
+#include "liste.h"
 
 #ifndef GESTIONTAG_H
 #define GESTIONTAG_H
@@ -31,12 +34,12 @@ liste suppTag (tag eviltag, liste ltag);
  *retourne le liste de tag 
  */ 
 
-liste ajouterPere (tag orphelin, liste newfather);
+tag * ajouterPere (tag *orphelin, liste newfather);
 /*Ajouter une liste de pere au tag orphelin 
  *retourne un pointeur vers le tag orphelin
  */
 
-liste supprimerPere (tag orphelin, liste lostfather);
+tag * supprimerPere (tag * orphelin, liste lostfather);
 /*Supprime une liste de pere au tag orphelin 
  *retourne un pointeur vers le tag orphelin
  */

@@ -63,6 +63,9 @@ liste vide_liste(liste l);
 */
 int detruire_liste(liste l);
 
+/*fusinne les deux liste l et p et retourne la liste definitive*/
+liste fusionner(liste l, liste p);
+
 /*valeur(l) retourne la valeur de l'element l*/
 void *valeur(liste l);
 
