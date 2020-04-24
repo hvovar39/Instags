@@ -9,10 +9,10 @@ utilise gestionFichier.c et getsionTag.c
 //Fonction de gestion de la liste des fichiers
 
 /*cree un fichier et le place dans la liste lFichier 
- *retourne la liste des fichier
+ *retourne le fichier creer
  *ou null en cas de probleme */
 
-liste creerFichier (int inode, char *path, liste lFichier){
+fichier *creerFichier (int inode, char *path, liste lFichier){
   fichier * fichier = malloc (sizeof(fichier));
   if (fichier == NULL)
     return NULL;
@@ -24,7 +24,7 @@ liste creerFichier (int inode, char *path, liste lFichier){
   fichier -> tag = ltag;
   if (inserer_avant (lFichier, fichier)== NULL)
     return NULL;
-  return lFichier;
+  return fichier;
 }
 
 /*supprime le fichier f de la liste lFichier
@@ -151,5 +151,38 @@ int estTaguer (fichier *f, liste tListe, liste nTListe){
   return 0;
 }
 
-fichier *changerPath (fichier f, char *newPath);
-fichier *cpFichier (fichier f, int newInode, char *newPath);
+/*renvoi la liste des fichiers taguer par les tags tagpst 
+ *mais pas par les tag tagabs*/
+
+liste getFichierTaguer (liste lfichier, liste tagPst, liste tagAbs){
+  liste result = creer_liste ();
+  if (result == NULL)
+    return NULL;
+  liste tmp = lfichier -> suivant;
+  while (!est_tete(tmp)){
+    if (estTaguer(tmp -> val, tagPst, tagAbs)){
+      if (inserer_avant (result, tmp-> val)==NULL)
+	return NULL;
+    }
+    tmp = tmp -> suivant;
+  }
+  return result;
+}
+
+/*modifie le chemin absolu vers le fichier */
+
+fichier *changerPath (fichier *f, char *newPath){
+  f -> path = newPath;
+  return f;
+}
+
+/*creer un nouveau fichier avec les même tag que f 
+ *mais un nouvel inode et un nouveau chemin 
+ *retourn NULL si la copie n'a pas eu lieu*/
+
+fichier *cpFichier (fichier *f, int newInode, char *newPath, liste  lfichier){
+  fichier *newf = creerFichier(newInode, newPath, lfichier);
+  if (newf == NULL)
+    return NULL;
+  return ajouterTag(newf, f -> tag);
+}
