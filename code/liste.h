@@ -75,4 +75,6 @@ liste suivant(liste l);
 /*precedent(l) retourne l'element precedent de l*/
 liste precedent(liste l);
 
+liste getElem (void * v, liste l);
+
 #endif

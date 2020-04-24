@@ -8,7 +8,7 @@ Creation, defenition de liens, ajout, deletion...
 /*La structure tag comporte un char * nom et un liste pere */
 
 /*Creer un tag et le met dans le liste de Tag, 
- *retourne un pointeur vers le tag creer 
+ *retourne la liste des tags
  *si la création à bien eu lieu
  */
 liste creerTag (char *nom, liste pere, liste ltag){
@@ -71,20 +71,16 @@ tag * supprimerPere (tag * orphelin, liste lostfather){
   return orphelin;
 }
 
-/*retourne le tag associé au nom */
+/*retourne le tag associé au nom ou NULL si il n'existe pas*/
 tag * getTag (char *nom, liste ltag){
   liste tmp = ltag -> suivant;
-  while (!strcmp(((tag *)(tmp -> val))-> nom, nom))
-    tmp = tmp -> suivant;
+  while (!strcmp(((tag *)(tmp -> val))-> nom, nom)){
+    if (est_tete(tmp)) 
+      return NULL;
+    else
+      tmp = tmp -> suivant;
+  }
   return tmp -> val;
-}
-
-/*retourne l'element associe au tag t */
-liste getElem (tag *t, liste ltag){
-  liste tmp = ltag -> suivant;
-  while (tmp -> val != t)
-    tmp = tmp -> suivant;
-  return tmp;
 }
 
 /*affiche une liste de tag */

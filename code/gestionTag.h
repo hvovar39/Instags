@@ -47,9 +47,6 @@ tag * supprimerPere (tag * orphelin, liste lostfather);
 tag * getTag (char *nom, liste ltag);
 /*retourne le tag associé au nom */
 
-liste getElem (tag *t, liste ltag);
-/*retourne l'element associe au tag t */
-
 void afficherTag (liste ltag);
 /*affiche une liste de tag */
 
