@@ -21,9 +21,11 @@ fichier *getFichierI (int inode, liste lFichier);
 fichier *getFichierP (char *path, liste lfichier);
 
 //Fonctions de gestion du lien fichier/tag
-fichier *ajouterTag (fichier f, liste t);
-fichier *retirerTag (fichier f, liste t);
-int estTaguer (fichier f, liste tListe, liste nTListe);
+fichier *ajouterTag (fichier *f, liste t);
+fichier *retirerTag (fichier *f, liste t);
+int tagPresent ( fichier *f, liste present);
+int tagAbsent (fichier *f, liste absent);
+int estTaguer (fichier *f, liste tListe, liste nTListe);
 fichier *changerPath (fichier f, char *newPath);
 fichier *cpFichier (fichier f, int newInode, char *newPath);
 
