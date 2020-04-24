@@ -160,3 +160,14 @@ liste precedent(liste l){
   return l->precedent;
 }
 
+liste getElem (void * v, liste l){
+  liste tmp = l -> suivant;
+  while (tmp -> val != v){
+    if (est_tete(tmp)) 
+      return NULL;
+    else
+      tmp = tmp -> suivant;
+  }
+  return tmp;
+}
+
