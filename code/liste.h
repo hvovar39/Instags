@@ -76,5 +76,6 @@ liste suivant(liste l);
 liste precedent(liste l);
 
 liste getElem (void * v, liste l);
+liste getTete (liste l);
 
 #endif

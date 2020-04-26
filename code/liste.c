@@ -171,3 +171,12 @@ liste getElem (void * v, liste l){
   return tmp;
 }
 
+liste getTete (liste l){
+  if (est_tete(l))
+    return l;
+  liste tmp = l -> suivant;
+  while (!est_tete(tmp))
+    tmp = tmp -> suivant;
+  return tmp;
+}
+
