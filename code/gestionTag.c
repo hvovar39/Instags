@@ -11,8 +11,8 @@ Creation, defenition de liens, ajout, deletion...
  *retourne la liste des tags
  *si la création à bien eu lieu
  */
-liste creerTag (char *nom, liste pere, liste ltag){
-  tag * tag= malloc (sizeof(tag));
+tag * creerTag (char *nom, liste pere, liste ltag){
+  tag * tag = malloc (sizeof(tag));
   if (tag == NULL)
     return NULL;
   tag -> nom = nom;
@@ -20,7 +20,7 @@ liste creerTag (char *nom, liste pere, liste ltag){
   if (inserer_avant (ltag, tag) == NULL)
     return NULL;
   else
-    return ltag;
+    return tag;
 }
 
 /*Supprime eviltag de liste tags (en cas de gestion d'erreur)
@@ -74,11 +74,12 @@ tag * supprimerPere (tag * orphelin, liste lostfather){
 /*retourne le tag associé au nom ou NULL si il n'existe pas*/
 tag * getTag (char *nom, liste ltag){
   liste tmp = ltag -> suivant;
+  if (est_tete(tmp)) 
+    return NULL;
   while (!strcmp(((tag *)(tmp -> val))-> nom, nom)){
+    tmp = tmp -> suivant;
     if (est_tete(tmp)) 
       return NULL;
-    else
-      tmp = tmp -> suivant;
   }
   return tmp -> val;
 }

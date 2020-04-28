@@ -14,18 +14,9 @@ struct tag {
 };
 typedef struct tag tag;
 
-/*=============================
 
-AJOUTE FUSION DE LISTE DANS LISTE.C !!!!
-
-=============================*/
-
-
-
-
-liste creerTag (char *nom, liste pere, liste ltag);
+tag *creerTag (char *nom, liste pere, liste ltag);
 /*Creer un tag et le met dans le liste de Tag, 
- *retourne un pointeur vers le tag creer 
  *si la création à bien eu lieu
  */
 

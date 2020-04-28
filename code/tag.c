@@ -46,11 +46,12 @@ liste suppFichier (fichier f, liste lFichier){
 
 fichier *getFichierI (int inode, liste lFichier){
   liste tmp = lFichier -> suivant;
+  if (est_tete (tmp))
+    return NULL;
   while (((fichier *)(tmp -> val))-> inode != inode){
+    tmp = tmp -> suivant;
     if (est_tete(tmp)) 
       return NULL;
-    else
-      tmp = tmp -> suivant;
   }
   return tmp -> val;
 }
@@ -59,11 +60,12 @@ fichier *getFichierI (int inode, liste lFichier){
 
 fichier *getFichierP (char *path, liste lFichier){
   liste tmp = lFichier -> suivant;
-  while (!strcmp(((fichier *)(tmp -> val))-> path, path)){
+  if (est_tete (tmp))
+    return NULL;
+  while (!strcmp(((fichier *)(tmp -> val))->path, path)){
+      tmp = tmp -> suivant;
     if (est_tete(tmp)) 
       return NULL;
-    else
-      tmp = tmp -> suivant;
   }
   return tmp -> val;
 }
@@ -185,4 +187,15 @@ fichier *cpFichier (fichier *f, int newInode, char *newPath, liste  lfichier){
   if (newf == NULL)
     return NULL;
   return ajouterTag(newf, f -> tag);
+}
+
+void afficherListeFic (liste lFic) {
+  if (!est_vide (lFic)){
+    if (est_tete (lFic))
+      lFic = suivant (lFic);
+    while (!est_tete (lFic)) {
+      printf (" %d -> %s\n", ((fichier *)lFic->val)->inode, ((fichier *)lFic->val)->path);
+      lFic = suivant (lFic);
+    }
+  }
 }

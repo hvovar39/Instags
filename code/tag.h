@@ -69,5 +69,8 @@ fichier *changerPath (fichier *f, char *newPath);
  *retourn NULL si la copie n'a pas eu lieu*/
 fichier *cpFichier (fichier *f, int newInode, char *newPath, liste lfichier);
 
+/*Affiche les fichiers de la liste*/
+void afficherListeFic (liste lFichier);
+
 
 #endif

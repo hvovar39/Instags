@@ -7,7 +7,7 @@ Lorsque l'on lance le programme une fonction LOAD chargera l'arborescence des
 tags. A la fin du programme une fonction SAVE enregistrera les modification 
 faite sur cette arbre.
 
-ADDTAGS : permet de marquer un fichier avec un/des tags donc de le rajouter 
+ADDTAG : permet de marquer un fichier avec un/des tags donc de le rajouter 
 dans FITAG (si il y est déjà de rajouter seulement les nouveau tags à sa liste; 
 si il n'y est pas rajouter une ligne avec son numéro d'enoeud et les tags qui 
 lui sont associé.)

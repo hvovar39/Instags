@@ -78,7 +78,13 @@ int saveFile (liste lFile, FILE *f){
   return 1;
 }
 
-int load (liste lTag, liste lFile, char *fileT, char *fileF);
+int load (liste lTag, liste lFile, char *fileT, char *fileF){
+  return 1;
+    }
 //charge les fichiers et les tags à partir des fichiers fileT et fileF
-int loadTag (liste lTag, int desc);
-int loadFile (liste lFile, int desc);
+int loadTag (liste lTag, int desc){
+  return 1;
+}
+int loadFile (liste lFile, int desc){
+  return 1;
+}
