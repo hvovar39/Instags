@@ -162,11 +162,12 @@ liste precedent(liste l){
 
 liste getElem (void * v, liste l){
   liste tmp = l -> suivant;
+  if(est_tete(tmp))
+    return NULL;
   while (tmp -> val != v){
+    tmp = tmp -> suivant;
     if (est_tete(tmp)) 
       return NULL;
-    else
-      tmp = tmp -> suivant;
   }
   return tmp;
 }
