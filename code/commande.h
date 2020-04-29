@@ -13,4 +13,9 @@ int ls (char* argv[], size_t t, liste lTag, liste lFic);
 
 int addtag (char* argv[], size_t t, liste lTag, liste lFic);
 //traite la commande ADDTAGS qui ajoute un tag à un fichier
+
+int untag (char* argv[], size_t t, liste lTag, liste lFic);
+//traite la commande UNTAG;
+
+
 #endif

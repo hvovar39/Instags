@@ -65,11 +65,49 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
 
   if (ajouterTag (fic, tags) == NULL) {
     printf ("Oups! Il y a eu un soucis dans l'ajout des tags.\n");
+    detruire_liste (tags);
     return -2;
   }
   printf ("Les tags");
   for (int j = 2; j<t; j++)
     printf (" %s", argv[j]);
   printf (" ont bien été ajouté au fichier %s.\n", argv[1]);
+  detruire_liste (tags);
+  return 1;
+}
+
+
+int untag (char* argv[], size_t t, liste lTag, liste lFic) {
+  /*untag retire les tags spécifié du fichier spécifié*/
+  if (t<3) {
+    printf ("Il manque des arguments:\nUNTAG fichier tag1 [tag2] [tag3] ...\n");
+    return -1;
+  }
+
+  fichier * fic;
+  if ((fic = getFichierP (argv[1], lFic)) == NULL) {
+    printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
+    return -1;
+  }
+
+  liste tags = creer_liste();
+  tag * newTag;
+  for (int i = 2; i<t; i++) {
+    if ((newTag = getTag (argv[i], lTag)) == NULL){
+      newTag = creerTag (argv[i], creer_liste(), lTag);
+    }
+    insere_apres (tags, newTag);
+  }
+  
+  if (retirerTag (fic, tags) == NULL) {
+    printf ("Oups! Il y a eu un soucis dans la deletions des tags.\n");
+    detruire_liste (tags);
+    return -2;
+  }
+  printf ("Les tags");
+  for (int j = 2; j<t; j++)
+    printf (" %s", argv[j]);
+  printf (" ont bien été retirés du fichier %s.\n", argv[1]);
+  detruire_liste (tags);
   return 1;
 }

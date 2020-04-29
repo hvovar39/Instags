@@ -62,6 +62,9 @@ int main () {
 
     if (strcmp ("ADDTAG", args[0]) == 0)
       addtag (args, n, lTag, lFic);
+
+    if (strcmp ("UNTAG", args[0]) == 0)
+      untag (args, n, lTag, lFic);
     
     re_init_arg (args); //On re malloc ce qui a été free
     wait (NULL);
@@ -69,8 +72,11 @@ int main () {
     memset (commande, 0, strlen(commande)); 
   }
 
-  
-
+  save (lTag, lFic, "TAG.csv", "FIC.csv");
+  printf ("les tags ont bien été sauvegardés.\n");
+  destroy_fichier (lFic);
+  destroy_tag (lTag);
+  free (commande);
   return 0;
 }
 
@@ -84,7 +90,7 @@ int loadFic (liste lTag, liste lFic) {
   char buff[50];
   printf ("Souhaitez vous chargez les tags à partir des fichiers de sauvegarde ?\n>");
   fgets (buff, 50, stdin);
-  if (buff[0] == 'y' && (load (lTag, lFic, "TAG.csv", "FITAG.csv"))){
+  if (buff[0] == 'y' && (load (lTag, lFic, "TAG.csv", "FIC.csv"))){
     printf ("Fichier bien chagré\n");
     return 1;
   }
