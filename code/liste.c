@@ -130,10 +130,14 @@ int destroy (liste l) {
 /*fusinne les deux liste l et p et retourne la liste definitive*/
 
 liste fusionner(liste l, liste p){
-  if ( est_vide (l))
+  if ( est_vide (l)) {
     return p;
-  else if (est_vide (p))
+    detruire_liste (l);
+  }
+  else if (est_vide (p)) {
     return l;
+    detruire_liste (p);
+  }
   else{
     liste debut = p -> suivant;
     liste fin = p -> precedent;

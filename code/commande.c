@@ -111,3 +111,53 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
   detruire_liste (tags);
   return 1;
 }
+
+
+int lt (char* argv[], size_t t, liste lTag, liste lFic){
+  /*lt gère la commande LT qui permet d'afficher les tags
+    liés aux fichiers passés en argument.
+    retourne le nombre de fichier traiter avec succès.
+  */
+  int res = 0;
+  if (t<2){
+    printf ("Il manque des arguments:\nLT fichier1 [fichier2] ...\n");
+    return -1;
+  }
+
+  fichier * fic;
+  
+  for (int i = 1; i<t; i++) {
+    if ((fic = getFichierP (argv[i], lFic)) == NULL)
+      printf ("Oups! Il y a eu un soucis. Je n'ai pas trouver le fichier %s.\n", argv[i]);
+    else {
+      printf ("--%s :\n", argv[i]);
+      afficherTags (fic->tag);
+      res ++;
+    }
+  }
+  return res;
+}
+
+int sontag (char* argv[], size_t t, liste lTag, liste lFic){
+  //traite la commande LT
+  if (t<3) {
+    printf ("Il manque des arguments:\nSONTAG fichierFils fichierPere1 [fichierPere2] ...\n");
+    return -1;
+  }
+
+  tag * pere;
+  liste lPere = creer_liste();
+  for (int i = 2; i<t; i++) {
+    if ((pere = getTag (argv[i], lTag)) == NULL)
+      pere = creerTag (argv[i], creer_liste(), lTag);
+    insere_apres (lPere, pere);
+  }
+  
+  tag *fils;
+  if ((fils = getTag (argv[1], lTag)) == NULL)
+    creerTag (argv[1], lPere, lTag);
+  else
+    ajouterPere (fils, lPere);
+
+  return 1;
+}

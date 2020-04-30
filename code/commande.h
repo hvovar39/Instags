@@ -17,5 +17,10 @@ int addtag (char* argv[], size_t t, liste lTag, liste lFic);
 int untag (char* argv[], size_t t, liste lTag, liste lFic);
 //traite la commande UNTAG;
 
+int lt (char* argv[], size_t t, liste lTag, liste lFic);
+//traite la commande LT
+
+int sontag (char* argv[], size_t t, liste lTag, liste lFic);
+//traite la commande SONTAG
 
 #endif

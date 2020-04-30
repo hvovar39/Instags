@@ -44,8 +44,14 @@ void afficherTag (liste ltag);
 void afficherFamilleTag (liste ltag);
 /*affiche les tags de la liste et leur peres associé */
 
+
+// A FAIRE
+
+int destroyTag (liste lTag);
 /*Supprimer la liste des tags, free ce qui doit l'être*/
-int destroy_tag (liste lTag);
+
+void afficherTags (liste lTag);
+/*Affiche la liste de tag*/
 
 
 #endif

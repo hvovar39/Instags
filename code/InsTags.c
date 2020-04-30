@@ -60,11 +60,17 @@ int main () {
     if (strcmp ("ls", args[0]) == 0)
       ls (args, n, lTag, lFic);
 
-    if (strcmp ("ADDTAG", args[0]) == 0)
+    else if (strcmp ("ADDTAG", args[0]) == 0)
       addtag (args, n, lTag, lFic);
 
-    if (strcmp ("UNTAG", args[0]) == 0)
+    else if (strcmp ("UNTAG", args[0]) == 0)
       untag (args, n, lTag, lFic);
+
+    else if (strcmp ("LT", args[0]) == 0)
+      lt (args, n, lTag, lFic);
+
+    else if (strcmp ("SONTAG", args[0]) == 0)
+      sontag (args, n, lTag, lFic);
     
     re_init_arg (args); //On re malloc ce qui a été free
     wait (NULL);
@@ -74,8 +80,8 @@ int main () {
 
   save (lTag, lFic, "TAG.csv", "FIC.csv");
   printf ("les tags ont bien été sauvegardés.\n");
-  destroy_fichier (lFic);
-  destroy_tag (lTag);
+  destroyFichier (lFic);
+  destroyTag (lTag);
   free (commande);
   return 0;
 }
