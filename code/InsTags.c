@@ -51,7 +51,7 @@ int main () {
   printf (">");
   
   while (fgets(commande, 500, stdin)) {
-    if ( (n = sep_com (commande, args, ARGC)) == 0){
+    if ( (n = sep_string (commande, ' ', args, ARGC)) == 0){
       //On separe la commande passer
       printf ("Oups, il y a eu un soucis avec la commande passé!\n");
       return -1;
@@ -71,6 +71,9 @@ int main () {
 
     else if (strcmp ("SONTAG", args[0]) == 0)
       sontag (args, n, lTag, lFic);
+
+    else if (strcmp ("mv", args[0]) == 0)
+      mv (args, n, lTag, lFic);
     
     re_init_arg (args); //On re malloc ce qui a été free
     wait (NULL);
@@ -122,22 +125,4 @@ void re_init_arg (char *argv[]) {
   }
 }
 
-int sep_com (char *com, char *argv[], int argc) {
-  char *tmp = strtok (com, " ");
-  int n = 0;
-  
-  while (n<argc-1 && tmp != NULL) {
-    if (tmp [strlen(tmp)-1] == '\n')
-      tmp [strlen(tmp)-1] = '\0';
-    strcpy( argv[n++], tmp);
-    tmp = strtok (NULL, " ");
-  }
-
-  if (n < argc-1) {
-    free (argv[n]);
-    argv[n] = NULL;
-  }
-
-  return n;
-}
 

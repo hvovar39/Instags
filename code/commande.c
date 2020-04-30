@@ -142,7 +142,10 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic){
 }
 
 int sontag (char* argv[], size_t t, liste lTag, liste lFic){
-  //traite la commande LT
+  /*traite la commande LT.
+    Permet d'ajouter des peres au premier tag
+    creer les tags qui n'existent pas
+  */
   if (t<3) {
     printf ("Il manque des arguments:\nSONTAG fichierFils fichierPere1 [fichierPere2] ...\n");
     return -1;
@@ -164,4 +167,23 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
 
   detruire_liste (lPere);
   return 1;
+}
+
+int sep_string (char *com, char c, char *argv[], int argc) {
+  char *tmp = strtok (com, c);
+  int n = 0;
+  
+  while (n<argc-1 && tmp != NULL) {
+    if (tmp [strlen(tmp)-1] == '\n')
+      tmp [strlen(tmp)-1] = '\0';
+    strcpy( argv[n++], tmp);
+    tmp = strtok (NULL, c);
+  }
+
+  if (n < argc-1) {
+    free (argv[n]);
+    argv[n] = NULL;
+  }
+
+  return n;
 }

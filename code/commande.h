@@ -24,4 +24,7 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic);
 int sontag (char* argv[], size_t t, liste lTag, liste lFic);
 //traite la commande SONTAG
 
+int sep_string (char *com, char c, char *argv[], int argc);
+
+
 #endif
