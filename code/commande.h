@@ -2,7 +2,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "liste.h"
-#include "tag.h"
+#include "fichier.h"
+#include "gestionTag.h"
 
 #ifndef COMMANDE_H
 #define COMMANDE_H
