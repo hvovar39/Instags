@@ -17,32 +17,31 @@ A la fin du programme une fonction SAVE enregistrera les modification faite sur 
 
 RESUME DES COMMANDES CREE:
 
-       ADDTAG : permet de marquer un fichier avec un/des tags (Rajoute le fichier/les tags à la liste concérné si besoin)
-ADDTAG Fichier Tag1 [Tag2] [Tag3] ...
+    ADDTAG : permet de marquer un fichier avec un/des tags (Rajoute le fichier/les tags à la liste concérné si besoin)
+    ADDTAG Fichier Tag1 [Tag2] [Tag3] ...
 
-       UNTAG : permet d'effacer un/des tags d'un fichier (supprime le fichier de la liste si il n'a plus de tag)
-UNTAG Fichier Tag1 [Tag2] [Tag3] ...
+    UNTAG : permet d'effacer un/des tags d'un fichier (supprime le fichier de la liste si il n'a plus de tag)
+    UNTAG Fichier Tag1 [Tag2] [Tag3] ...
 
-      LT : permet de lister les tags d'un ou plusieurs fichiers
-LT Fichier1 [Fichier2] [Fichier3] ...
+    LT : permet de lister les tags d'un ou plusieurs fichiers
+    LT Fichier1 [Fichier2] [Fichier3] ...
 
-      LS -TAG : permet de lister les fichier avec les tags demandé. Un tag précédé de '!' est considéré comme la négation de ce tag
-LS -TAG [tag1] ... [!tag2] ...
-Exemple : LS -TAG couleur !bleu voiture
-Liste les fichiers comportant le tag couleur et voiture mais pas bleu
+    LS -TAG : permet de lister les fichier avec les tags demandé. Un tag précédé de '!' est considéré comme la négation de ce tag
+    LS -TAG [tag1] ... [!tag2] ...
+    Exemple : LS -TAG couleur !bleu voiture
+    Liste les fichiers comportant le tag couleur et voiture mais pas bleu
 
-      SONTAG : permet de spécifier un lien hierarchique entre deux tags (créé les tags si besoin)
-SONTAG tagFils tagPere1 [tagPere2] ...
+    SONTAG : permet de spécifier un lien hierarchique entre deux tags (créé les tags si besoin)
+    SONTAG tagFils tagPere1 [tagPere2] ...
 
 RESUME DES COMMMANDE A PRENDRE EN COMPTE:
 
-       mv : Modifie le path du fichier. Ne modifie pas sont numéros d'i-noeud ou ses tags.
+    mv : Modifie le path du fichier. Ne modifie pas sont numéros d'i-noeud ou ses tags.
 
-       cp : Copier un fichier créer un nouveau fichier avec un nouvel i-noeud. Les tags du fichiers d'origines seront copier pour le fichier créé.
+    cp : Copier un fichier créer un nouveau fichier avec un nouvel i-noeud. Les tags du fichiers d'origines seront copier pour le fichier créé.
+    
+    ln : un lien physique à le même enoeud que le fichier, cela ne pose donc pas de probleme.
+    Pour les lien symbolique nous avont un nouvel e noeud il faudra donc que l'on 
+    accede au fichier pour obtenir les tags.
 
-       ln : un lien physique à le même enoeud que le fichier, cela ne pose donc pas de 
-probleme.
-Pour les lien symbolique nous avont un nouvel e noeud il faudra donc que l'on 
-accede au fichier pour obtenir les tags.
-
-       rm : Si l'on supprime un fichier on doit le supprimer de la liste des fichiers
+    rm : Si l'on supprime un fichier on doit le supprimer de la liste des fichiers
