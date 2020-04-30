@@ -4,7 +4,7 @@ Fonction lier aux commandes (addtags, untag, lt, ...)
 utilise gestionFichier.c et getsionTag.c
 */
 
-#include "tag.h"
+#include "Fichier.h"
 
 //Fonction de gestion de la liste des fichiers
 
