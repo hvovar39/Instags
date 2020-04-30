@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "liste.h"
 #include "gestionTag.h"
-#include "tag.h"
+#include "fichier.h"
 
 
 #ifndef GESTIONSAUVEGARDE_H
