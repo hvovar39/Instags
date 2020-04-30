@@ -47,9 +47,6 @@ void afficherFamilleTag (liste ltag);
 
 // A FAIRE
 
-int destroyTag (liste lTag);
-/*Supprimer la liste des tags, free ce qui doit l'être*/
-
 void afficherTags (liste lTag);
 /*Affiche la liste de tag*/
 

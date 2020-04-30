@@ -122,10 +122,6 @@ int detruire_liste(liste l){
   return 1;
 }
 
-/*destroy free toute les valeurs avant d'appeler detruire_liste*/
-int destroy (liste l) {
-  return 1;
-}
 
 /*fusinne les deux liste l et p et retourne la liste definitive*/
 

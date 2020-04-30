@@ -63,9 +63,6 @@ liste vide_liste(liste l);
 */
 int detruire_liste(liste l);
 
-/*destroy free toute les valeurs avant d'appeler detruire_liste*/
-int destroy (liste l);
-
 /*fusinne les deux liste l et p et retourne la liste definitive*/
 liste fusionner(liste l, liste p);
 

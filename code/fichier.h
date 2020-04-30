@@ -73,10 +73,4 @@ fichier *cpFichier (fichier *f, int newInode, char *newPath, liste lfichier);
 void afficherListeFic (liste lFichier);
 
 
-// A FAIRE
-
-/*Supprime la liste des fichiers et free ce qui doit l'être*/
-int destroyFichier (liste lFic);
-
-
 #endif

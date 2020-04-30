@@ -30,6 +30,9 @@ int ls (char * argv[], size_t t, liste lTag, liste lFic) {
     liste fic = getFichierTaguer (lFic, conj, neg);
     afficherListeFic (fic);
   }
+  detruire_liste(conj);
+  detruire_liste(neg);
+  detruire_liste(fic);
   return 1;
 }
 
@@ -159,5 +162,6 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
   else
     ajouterPere (fils, lPere);
 
+  detruire_liste (lPere);
   return 1;
 }
