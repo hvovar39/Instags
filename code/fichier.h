@@ -5,8 +5,8 @@
 #include "liste.h"
 #include "gestionTag.h"
 
-#ifndef TAG_H
-#define TAG_H
+#ifndef FICHIER_H
+#define FICHIER_H
 
 struct fichier {
   int inode;
