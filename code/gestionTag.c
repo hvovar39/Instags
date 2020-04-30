@@ -3,7 +3,7 @@ Code lier à la gestions des tags.
 Creation, defenition de liens, ajout, deletion...
 */
 
-#include "tag.h"
+#include "gestionTag.h"
 
 /*La structure tag comporte un char * nom et un liste pere */
 
