@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -9,8 +8,8 @@
 #include "tag.h"
 
 
-#ifndef GESTIONFICHIER_H
-#define GESTIONFICHIER_H
+#ifndef GESTIONSAUVEGARDE_H
+#define GESTIONSAUVEGARDE_H
 
 int save (liste lTag, liste lFile, char *fileT, char * fileF);
 //sauvegarde la liste des tags et des fichiers dans fileT et fileF
