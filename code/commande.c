@@ -12,14 +12,13 @@
 int ls (char * argv[], size_t t, liste lTag, liste lFic) {
   /*Execute ls, avec l'option spécifié. Traite l'option -TAG permettant
     de lister les fichiers contenant la composition de tag spécifié*/
-  int res;
   liste conj;
   liste neg;
   liste fic;
   if ( t<3 || strcmp (argv[1], "-TAG")){
     if (fork() == 0)
       execvp ("ls", argv);
-    return res;
+    return 1;
   }
   else {
     conj = creer_liste();
@@ -54,7 +53,7 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
     return -2;
   }
-  if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL)
+  if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL)
     fic = creerFichier (statbuf.st_ino, argv[1], lFic);
 
   //On ajoute les tags au fichier, et a lTag si besoin
@@ -95,7 +94,7 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
     return -2;
   }
-  if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL){
+  if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL){
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
     return -3;
   } 
@@ -140,10 +139,10 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic){
     if (stat (argv[1], &statbuf) == -1)
       printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
     else{
-      if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL)
+      if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL)
 	fic = creerFichier (statbuf.st_ino, argv[1], lFic);
       printf ("--%s :\n", argv[i]);
-      afficherTags (fic->tag);
+      afficherTag (fic->tag);
       res ++;
     }
   }
@@ -185,7 +184,7 @@ int mv (char* argv[], size_t t, liste lTag, liste lFic){
 
   fichier * fic;
   struct stat statbuf;
-  int utile = 1, optiont = 0, n;
+  int utile = 1, option = 0, n;
   char *tab[25];
   if (t>=3) {
     while (argv[utile][0] == '-'){
@@ -194,11 +193,11 @@ int mv (char* argv[], size_t t, liste lTag, liste lFic){
     }
 
     if (!option) {
-      n = sep_string (argv[utile+1], '/', tab, 25);
+      n = sep_string (argv[utile+1], "/", tab, 25);
       if (stat (argv[utile], &statbuf) == -1)
 	printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
       else{
-	if ((fic = getFichierI (statbuff.st_ino, lFic)) != NULL)
+	if ((fic = getFichierI (statbuf.st_ino, lFic)) != NULL)
 	  fic->path = tab[n-1];
       }
     }

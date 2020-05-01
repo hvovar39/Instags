@@ -35,6 +35,16 @@ tag * supprimerPere (tag * orphelin, liste lostfather);
  *retourne un pointeur vers le tag orphelin
  */
 
+/*tagPresent verifie si le fichier f  est taguer 
+ *par la liste de tag present 
+ *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
+int tagPresent ( liste tFichier, liste present);
+
+/*tagAbsent verifie si le fichier f ne possede pas absent
+ *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
+int tagAbsent (liste tFichier, liste absent);
+
+
 tag * getTag (char *nom, liste ltag);
 /*retourne le tag associé au nom */
 

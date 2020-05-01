@@ -43,14 +43,7 @@ fichier *ajouterTag (fichier *f, liste t);
  */
 fichier *retirerTag (fichier *f, liste t);
 
-/*tagPresent verifie si le fichier f  est taguer 
- *par la liste de tag present 
- *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagPresent ( liste tFichier, liste present);
 
-/*tagAbsent verifie si le fichier f ne possede pas absent
- *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagAbsent (liste tFichier, liste absent);
 
 /*estTaguer verifie si la liste est taguer par tliste 
  *mais pas par nTListe, 

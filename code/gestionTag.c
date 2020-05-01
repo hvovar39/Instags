@@ -42,7 +42,17 @@ liste suppTag (tag eviltag, liste ltag){
  *retourne un pointeur vers le tag orphelin
  */
 tag * ajouterPere (tag * orphelin, liste newfather){
-  liste newpere = fusionner (orphelin -> pere, newfather);
+  liste proudfather =creer_liste();
+  liste test =creer_liste();
+  liste tmp =newfather->suivant;
+  while (!est_tete(tmp)){
+    insere_apres(test,tmp);
+    if(tagAbsent(orphelin->pere, test))
+      insere_apres(proudfather,tmp);
+    vide_liste(test);
+    tmp=tmp->suivant;
+  }
+  liste newpere = fusionner (orphelin -> pere, proudfather);
   if (newpere == NULL)
     return NULL;
   else
@@ -69,6 +79,48 @@ tag * supprimerPere (tag * orphelin, liste lostfather){
     tmp = orphelin -> pere -> suivant;
   }
   return orphelin;
+}
+
+/*estTaguer verifie si le fichier f  est taguer 
+ *par la liste de tag present 
+ *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
+
+int tagPresent (liste tFichier, liste present){
+  if (est_vide (tFichier))
+    return 0;
+  else {
+    present = suivant(present);
+    do {
+      tFichier = suivant (tFichier);
+      while (tFichier->val != present->val && !est_tete(present))
+	present = suivant (present);
+      if (!est_tete(present)){
+	present = suivant (present);
+	supprimer_element (precedent (present));
+	present = getTete (present);
+      }
+      tagPresent (((tag *)tFichier->val)->pere, present);
+    }while (!est_tete (tFichier) && !est_vide (present));
+    if (est_vide (present))
+      return 1;
+  }
+  return 0;
+}
+
+/*estTaguer verifie si le fichier f ne possede pas absent
+ *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
+
+int tagAbsent (liste tFichier, liste absent){
+  liste abs = absent -> suivant;
+  while (!est_tete(abs)){
+    liste test = creer_liste();
+    insere_apres (test, abs->val);
+    if (tagPresent(tFichier, test))
+      return 0;
+    abs=abs->suivant;
+    detruire_liste(test);
+  }
+  return 1;
 }
 
 /*retourne le tag associé au nom ou NULL si il n'existe pas*/
@@ -99,8 +151,8 @@ void afficherTag (liste ltag){
 
 /*affiche les tags de la liste et leur peres associé */
 void afficherFamilleTag (liste ltag){
-  liste tmp = ltag -> suivant;
-  char *result = "Liste des tags";
+  //liste tmp = ltag -> suivant;
+  //char *result = "Liste des tags";
   //affichier le tag
   //si la liste de pere est vide on s'arette la
   //sinon je relance la fonction sur la liste des peres
