@@ -210,6 +210,72 @@ int mv (char* argv[], size_t t, liste lTag, liste lFic){
 }
 
 
+int cp (char* argv[], size_t t, liste lTag, liste lFic){
+//traite la commande cp
+  if (fork() == 0)
+    execvp ("cp", argv);
+  
+  fichier *ficO;
+  fichier *ficC;
+  struct stat statbufO, statbufC;
+  int utile = 1, option = 0, n;
+  char *tab[25];
+  char path[200];
+  if (t>=3) {
+    while (argv[utile][0] == '-'){
+      if (strchr (argv[utile++], 't') != NULL)
+
+	option++;
+    }
+
+    if (option) {
+      for (int i = utile+1; i<t; i++) {
+	n = sep_string (argv[i], "/", tab, 25);
+	strcpy (path, argv[1]);
+	strcat (path, tab[n-1]);
+	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
+	  printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
+	else{
+	  if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL && (ficO = getFichierI (statbufO.st_ino, lFic)) != NULL )
+	    ajouterTag (ficC, ficO->tag);
+	}
+      }
+    }else {
+      for (int i = utile; i<t-1; i++) {
+	n = sep_string (argv[i], "/", tab, 25);
+	strcpy (path, argv[t-1]);
+	strcat (path, tab[n-1]);
+	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
+	  printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
+	else{
+	  if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL && (ficO = getFichierI (statbufO.st_ino, lFic)) != NULL )
+	    ajouterTag (ficC, ficO->tag);
+	}
+      }
+    }
+  }
+  return 1;
+}
+
+int rm (char* argv[], size_t t, liste lTag, liste lFic){
+//traite la commande rm
+
+  fichier *fic;
+  struct stat statbuf;
+  for (int i = 1; i<t; i++) {
+    if (stat (argv[i], &statbuf) == -1)
+      printf ("Oups! Le fichier demandé n'existe pas.\n");
+    if ((fic = getFichierI (statbuf.st_ino, lFic)) != NULL)
+      suppFichier (fic, lFic);
+  }
+  if (fork() == 0)
+    execvp ("rm", argv);
+
+  return 1;
+}
+
+
+
 int sep_string (char *com, char *c, char *argv[], int argc) {
   char *tmp = strtok (com, c);
   int n = 0;

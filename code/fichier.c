@@ -30,11 +30,11 @@ fichier *creerFichier (int inode, char *path, liste lFichier){
 /*supprime le fichier f de la liste lFichier
  *retourne la liste lFichier si tout s'est bien passe, NULL sinon */
 
-liste suppFichier (fichier f, liste lFichier){
+liste suppFichier (fichier *f, liste lFichier){
   if (est_vide (lFichier))
     return NULL;
   else {
-    if (supprimer_element (getElem(&f, lFichier)) == NULL)
+    if (supprimer_element (getElem(f, lFichier)) == NULL)
       return NULL;
     else
       return lFichier;

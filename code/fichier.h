@@ -23,7 +23,7 @@ fichier *creerFichier (int inode, char *path, liste lFichier);
 
 /*supprime le fichier f de la liste lFichier
  *retourne la liste lFichier si tout s'est bien passe, NULL sinon */
-liste suppFichier (fichier f, liste lFichier);
+liste suppFichier (fichier *f, liste lFichier);
 
 /* retourn un fichier a partir de son inode */
 fichier *getFichierI (int inode, liste lFichier);

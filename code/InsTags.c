@@ -40,6 +40,7 @@ void re_init_arg (char *[]);
 int main () {
   int n = 0;
   char *commande = malloc (500*sizeof(char));
+  char buf [100];
   char *args[ARGC];
   init_arg (args);
   
@@ -74,25 +75,18 @@ int main () {
     else if (strcmp ("mv", args[0]) == 0)
       mv (args, n, lTag, lFic);
 
-    /*else if (strcmp ("cp", args[0]) == 0)
+    else if (strcmp ("cp", args[0]) == 0)
       cp (args, n, lTag, lFic);
 
-    else if (strcmp ("ln", args[0]) == 0)
-      ln (args, n, lTag, lFic);
-
     else if (strcmp ("rm", args[0]) == 0)
-    rm (args, n, lTag, lFic);*/
+    rm (args, n, lTag, lFic);
 
     else if (strcmp ("cd", args[0]) == 0){
-      if (fork() == 0)
-	execvp ("cd", args);
-      if (!chdir (args[1])){
+      if (chdir (args[1]) != 0){
 	printf("Oups! Il y a eu un soucis de déplacement dans l'arborescence\n");
-	exit(-1);
-      } else {
-	if (getcwd (commande, strlen(commande)) != NULL)
-	  printf ("Nous nous sommes déplacé. Nous voici à :\n%s\n", commande);
-      }
+	return -1;
+      } else 
+	printf ("Nous nous sommes déplacé. Nous voici à :\n%s\n", getcwd (buf, 100));
     }
 
     else {
