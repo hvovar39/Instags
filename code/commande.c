@@ -17,7 +17,7 @@ int ls (char * argv[], size_t t, liste lTag, liste lFic) {
   liste neg;
   liste fic;
   if ( t<3 || strcmp (argv[1], "-TAG")){
-    if ((res = fork()) == 0)
+    if (fork() == 0)
       execvp ("ls", argv);
     return res;
   }
@@ -50,13 +50,12 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   //On récupère ou creer le fichier concerné
   fichier * fic;
   struct stat statbuf;
-  if ((fic = getFichierP (argv[1], lFic)) == NULL) {
-    if (stat (argv[1], &statbuf) == -1){
-      printf ("Oups! Il y a eu un soucis dans l'ajout des tags.\n");
-      return -3;
-    }
-    fic = creerFichier (statbuf.st_ino, argv[1], lFic);
+  if (stat (argv[1], &statbuf) == -1){
+    printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
+    return -2;
   }
+  if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL)
+    fic = creerFichier (statbuf.st_ino, argv[1], lFic);
 
   //On ajoute les tags au fichier, et a lTag si besoin
   liste tags = creer_liste();
@@ -72,7 +71,7 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   if (ajouterTag (fic, tags) == NULL) {
     printf ("Oups! Il y a eu un soucis dans l'ajout des tags.\n");
     detruire_liste (tags);
-    return -2;
+    return -3;
   }
   printf ("Les tags");
   for (int j = 2; j<t; j++)
@@ -91,10 +90,15 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
   }
 
   fichier * fic;
-  if ((fic = getFichierP (argv[1], lFic)) == NULL) {
+  struct stat statbuf;
+  if (stat (argv[1], &statbuf) == -1){
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
-    return -1;
+    return -2;
   }
+  if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL){
+    printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
+    return -3;
+  } 
 
   liste tags = creer_liste();
   tag * newTag;
@@ -108,7 +112,7 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
   if (retirerTag (fic, tags) == NULL) {
     printf ("Oups! Il y a eu un soucis dans la deletions des tags.\n");
     detruire_liste (tags);
-    return -2;
+    return -4;
   }
   printf ("Les tags");
   for (int j = 2; j<t; j++)
@@ -131,13 +135,15 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic){
   }
 
   fichier * fic;
-  
+  struct stat statbuf;
   for (int i = 1; i<t; i++) {
-    if ((fic = getFichierP (argv[i], lFic)) == NULL)
-      printf ("Oups! Il y a eu un soucis. Je n'ai pas trouver le fichier %s.\n", argv[i]);
-    else {
+    if (stat (argv[1], &statbuf) == -1)
+      printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
+    else{
+      if ((fic = getFichierI (statbuff.st_ino, lFic)) == NULL)
+	fic = creerFichier (statbuf.st_ino, argv[1], lFic);
       printf ("--%s :\n", argv[i]);
-      afficherTag (fic->tag);
+      afficherTags (fic->tag);
       res ++;
     }
   }
@@ -171,6 +177,39 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
   detruire_liste (lPere);
   return 1;
 }
+
+int mv (char* argv[], size_t t, liste lTag, liste lFic){
+  /*traite la commande mv.
+    Change le nom du fichier concerné.
+  */
+
+  fichier * fic;
+  struct stat statbuf;
+  int utile = 1, optiont = 0, n;
+  char *tab[25];
+  if (t>=3) {
+    while (argv[utile][0] == '-'){
+      if (strchr (argv[utile++], 't') != NULL)
+	option++;
+    }
+
+    if (!option) {
+      n = sep_string (argv[utile+1], '/', tab, 25);
+      if (stat (argv[utile], &statbuf) == -1)
+	printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
+      else{
+	if ((fic = getFichierI (statbuff.st_ino, lFic)) != NULL)
+	  fic->path = tab[n-1];
+      }
+    }
+  }
+
+  if (fork() == 0)
+    execvp ("mv", argv);
+
+  return 1;
+}
+
 
 int sep_string (char *com, char *c, char *argv[], int argc) {
   char *tmp = strtok (com, c);

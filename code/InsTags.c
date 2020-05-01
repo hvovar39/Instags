@@ -31,7 +31,6 @@ Contient la boucle d'interaction
 int loadFic (liste, liste);
 void init_arg (char *[]);
 void re_init_arg (char *[]);
-int sep_com (char *, char *[], int);
 
 
 /*MAIN
@@ -74,6 +73,32 @@ int main () {
 
     else if (strcmp ("mv", args[0]) == 0)
       mv (args, n, lTag, lFic);
+
+    /*else if (strcmp ("cp", args[0]) == 0)
+      cp (args, n, lTag, lFic);
+
+    else if (strcmp ("ln", args[0]) == 0)
+      ln (args, n, lTag, lFic);
+
+    else if (strcmp ("rm", args[0]) == 0)
+    rm (args, n, lTag, lFic);*/
+
+    else if (strcmp ("cd", args[0]) == 0){
+      if (fork() == 0)
+	execvp ("cd", args);
+      if (!chdir (args[1])){
+	printf("Oups! Il y a eu un soucis de déplacement dans l'arborescence\n");
+	exit(-1);
+      } else {
+	if (getcwd (commande, strlen(commande)) != NULL)
+	  printf ("Nous nous sommes déplacé. Nous voici à :\n%s\n", commande);
+      }
+    }
+
+    else {
+      if (fork() == 0)
+	execvp (args[0], args);
+    }
     
     re_init_arg (args); //On re malloc ce qui a été free
     wait (NULL);
