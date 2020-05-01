@@ -68,7 +68,6 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
 
 
   if (ajouterTag (fic, tags) == NULL) {
-    printf ("Oups! Il y a eu un soucis dans l'ajout des tags.\n");
     detruire_liste (tags);
     return -3;
   }

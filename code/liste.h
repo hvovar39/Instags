@@ -12,7 +12,7 @@
 
 struct elem{
   struct elem *suivant; /*pointeur vers l'element suivant*/
-  struct elem *precendent; /*pointeur vers l'element precedent*/
+  struct elem *precedent; /*pointeur vers l'element precedent*/
   void *val; /*pointeur vers les donnees de chaque element*/
 };
 typedef struct elem elem;

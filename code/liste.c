@@ -8,18 +8,7 @@ Fonctions utile sur les listes.
 #include <stdlib.h>
 #include <limits.h>
 #include <assert.h>
-
-/*listes doublement chainees circulaires
- *chaque liste possede une tete qui, elle, ne contient pas de valeur
- */
-
-struct elem{
-  struct elem *suivant; /*pointeur vers l'element suivant*/
-  struct elem *precedent; /*pointeur vers l'element precedent*/
-  void *val; /*pointeur vers les donnees de chaque element*/
-};
-typedef struct elem elem;
-typedef elem *liste;
+#include "liste.h"
 
 /* creer_liste cree la tête de la liste, 
  *retourn NULL si ça echoue, la liste l sinon */
@@ -77,8 +66,12 @@ liste inserer_avant (liste next, void *valeur){
  *retourne n =/= 0 si c'est le cas, 0 sinon*/
 
 int est_tete(liste l){
-  return (l->val == NULL) ; /*la valeur est NULL pour la tete*/
-}
+  if (l == NULL)
+    return -1;
+  else if (l->val == NULL)
+    return 1;
+  else
+    return 0;
 
 /*supprimer_element (l) supprime un element de la liste
  * on ne peut pas supprimer la tete
@@ -126,23 +119,28 @@ int detruire_liste(liste l){
 /*fusinne les deux liste l et p et retourne la liste definitive*/
 
 liste fusionner(liste l, liste p){
-  if ( est_vide (l)) {
-    return p;
+  if (est_vide (l)) {
+    printf ("cas 1\n");
     detruire_liste (l);
+    return p;
   }
   else if (est_vide (p)) {
-    return l;
+    printf ("cas 2\n");
     detruire_liste (p);
+    return l;
   }
   else{
-    liste debut = p -> suivant;
-    liste fin = p -> precedent;
-    l -> precedent -> suivant = debut;
-    l -> precedent = fin;
-    fin -> suivant = l;
-    debut -> precedent = l;
+    printf ("cas 3\n");
+    l = getTete(l);
+    p = getTete(p);
+    p = suivant (p);
+    while (!est_tete(p)){
+      insere_apres (l, p->val);
+      p = suivant (p);
+    }      
     if (! detruire_liste (p))
       return NULL;
+    printf ("fin cas 3\n");
   }
   return l;
 }
