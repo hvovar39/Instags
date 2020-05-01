@@ -45,10 +45,4 @@ void afficherFamilleTag (liste ltag);
 /*affiche les tags de la liste et leur peres associé */
 
 
-// A FAIRE
-
-void afficherTags (liste lTag);
-/*Affiche la liste de tag*/
-
-
 #endif

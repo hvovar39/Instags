@@ -13,21 +13,24 @@ int ls (char * argv[], size_t t, liste lTag, liste lFic) {
   /*Execute ls, avec l'option spécifié. Traite l'option -TAG permettant
     de lister les fichiers contenant la composition de tag spécifié*/
   int res;
+  liste conj;
+  liste neg;
+  liste fic;
   if ( t<3 || strcmp (argv[1], "-TAG")){
     if ((res = fork()) == 0)
       execvp ("ls", argv);
     return res;
   }
   else {
-    liste conj = creer_liste();
-    liste neg = creer_liste();
+    conj = creer_liste();
+    neg = creer_liste();
     for (int i = 2; i<t; i++) {
       if (argv[i][0] == '!')
 	insere_apres (neg, getTag (argv[i]+1, lTag));
       else
 	insere_apres (conj, getTag (argv[i], lTag));
     }
-    liste fic = getFichierTaguer (lFic, conj, neg);
+    fic = getFichierTaguer (lFic, conj, neg);
     afficherListeFic (fic);
   }
   detruire_liste(conj);
@@ -134,7 +137,7 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic){
       printf ("Oups! Il y a eu un soucis. Je n'ai pas trouver le fichier %s.\n", argv[i]);
     else {
       printf ("--%s :\n", argv[i]);
-      afficherTags (fic->tag);
+      afficherTag (fic->tag);
       res ++;
     }
   }
@@ -169,7 +172,7 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
   return 1;
 }
 
-int sep_string (char *com, char c, char *argv[], int argc) {
+int sep_string (char *com, char *c, char *argv[], int argc) {
   char *tmp = strtok (com, c);
   int n = 0;
   

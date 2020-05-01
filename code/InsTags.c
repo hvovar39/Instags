@@ -51,7 +51,7 @@ int main () {
   printf (">");
   
   while (fgets(commande, 500, stdin)) {
-    if ( (n = sep_string (commande, ' ', args, ARGC)) == 0){
+    if ( (n = sep_string (commande, " ", args, ARGC)) == 0){
       //On separe la commande passer
       printf ("Oups, il y a eu un soucis avec la commande passé!\n");
       return -1;
@@ -83,8 +83,8 @@ int main () {
 
   save (lTag, lFic, "TAG.csv", "FIC.csv");
   printf ("les tags ont bien été sauvegardés.\n");
-  destroyFichier (lFic);
-  destroyTag (lTag);
+  detruire_liste (lFic);
+  detruire_liste (lTag);
   free (commande);
   return 0;
 }

@@ -46,11 +46,11 @@ fichier *retirerTag (fichier *f, liste t);
 /*tagPresent verifie si le fichier f  est taguer 
  *par la liste de tag present 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagPresent ( fichier *f, liste present);
+int tagPresent ( liste tFichier, liste present);
 
 /*tagAbsent verifie si le fichier f ne possede pas absent
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagAbsent (fichier *f, liste absent);
+int tagAbsent (liste tFichier, liste absent);
 
 /*estTaguer verifie si la liste est taguer par tliste 
  *mais pas par nTListe, 

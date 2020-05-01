@@ -112,33 +112,40 @@ fichier *retirerTag (fichier *f, liste t){
  *par la liste de tag present 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
-int tagPresent ( fichier *f, liste present){
-  liste tag = f -> tag -> suivant;
-  liste verif = present -> suivant;
-  while (!est_tete(verif)){
-    while (tag != verif){
-      if(est_tete(tag))
-	return 0;
-      tag = tag-> suivant;
-    }
-    verif = verif -> suivant;
+int tagPresent (liste tFichier, liste present){
+  if (est_vide (tFichier))
+    return 0;
+  else {
+    present = suivant(present);
+    do {
+      tFichier = suivant (tFichier);
+      while (tFichier->val != present->val && !est_tete(present))
+	present = suivant (present);
+      if (!est_tete(present)){
+	present = suivant (present);
+	supprimer_element (precedent (present));
+	present = getTete (present);
+      }
+      tagPresent (((tag *)tFichier->val)->pere, present);
+    }while (!est_tete (tFichier) && !est_vide (present));
+    if (est_vide (present))
+      return 1;
   }
-  return 1;
+  return 0;
 }
 
 /*estTaguer verifie si le fichier f ne possede pas absent
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
-int tagAbsent (fichier *f, liste absent){
-  liste  tag = f -> tag -> suivant;
-  liste verif = absent -> suivant;
-  while (!est_tete(verif)){
-    while (!est_tete(tag)){
-      if (verif == tag)
-	return 0;
-      tag = tag -> suivant;
-    }
-    verif = verif -> suivant;
+int tagAbsent (liste tFichier, liste absent){
+  liste abs = absent -> suivant;
+  while (!est_tete(abs)){
+    liste test = creer_liste();
+    insere_apres (test, abs->val);
+    if (tagPresent(tFichier, test))
+      return 0;
+    abs=abs->suivant;
+    detruire_liste(test);
   }
   return 1;
 }
@@ -148,7 +155,7 @@ int tagAbsent (fichier *f, liste absent){
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
 int estTaguer (fichier *f, liste tListe, liste nTListe){
-  if (tagPresent (f, tListe) && tagAbsent (f, nTListe))
+  if (tagPresent (f->tag, tListe) && tagAbsent (f->tag, nTListe))
     return 1;
   return 0;
 }

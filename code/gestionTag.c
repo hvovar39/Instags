@@ -85,7 +85,24 @@ tag * getTag (char *nom, liste ltag){
 }
 
 /*affiche une liste de tag */
-void afficherTag (liste ltag);
+void afficherTag (liste ltag){
+  liste tagelem =ltag -> suivant;
+  char *result = "Liste des tags";
+  while (!est_tete(tagelem)){
+    result = strcat(result, ",");
+    result = strcat(result, ((tag *)(tagelem -> val))-> nom);
+    tagelem = tagelem -> suivant;
+  }
+  result = strcat (result, "\n");
+  printf("%s", result);
+}
 
 /*affiche les tags de la liste et leur peres associé */
-void afficherFamilleTag (liste ltag);
+void afficherFamilleTag (liste ltag){
+  liste tmp = ltag -> suivant;
+  char *result = "Liste des tags";
+  //affichier le tag
+  //si la liste de pere est vide on s'arette la
+  //sinon je relance la fonction sur la liste des peres
+  
+}

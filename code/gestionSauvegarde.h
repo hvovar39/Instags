@@ -6,6 +6,7 @@
 #include "liste.h"
 #include "gestionTag.h"
 #include "fichier.h"
+#include "commande.h"
 
 
 #ifndef GESTIONSAUVEGARDE_H
@@ -20,7 +21,7 @@ int saveFile (liste lFile, FILE *f);
 
 int load (liste lTag, liste lFile, char *fileT, char *fileF);
 //charge les fichiers et les tags à partir des fichiers fileT et fileF
-int loadTag (liste lTag, int desc);
-int loadFile (liste lFile, int desc);
+int loadTag (liste lTag, FILE *f);
+int loadFile (liste lFile, liste lTag, FILE *f);
 
 #endif
