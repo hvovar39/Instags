@@ -157,12 +157,9 @@ fichier *cpFichier (fichier *f, int newInode, char *newPath, liste  lfichier){
 }
 
 void afficherListeFic (liste lFic) {
-  if (!est_vide (lFic)){
-    if (est_tete (lFic))
-      lFic = suivant (lFic);
-    while (!est_tete (lFic)) {
-      printf (" %d -> %s\n", ((fichier *)lFic->val)->inode, ((fichier *)lFic->val)->path);
-      lFic = suivant (lFic);
-    }
+  lFic = suivant (getTete (lFic));
+  while (!est_tete (lFic)){
+    printf (" %d -> %s\n", ((fichier *)lFic->val)->inode, ((fichier *)lFic->val)->path);
+    lFic = suivant (lFic);
   }
 }

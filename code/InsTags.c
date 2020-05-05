@@ -48,10 +48,11 @@ int main () {
   liste lTag = creer_liste();
   liste lFic = creer_liste();
   loadFic (lTag, lFic);
+  afficherFamilleTag(lTag);
   printf (">");
   
   while (fgets(commande, 500, stdin)) {
-    if ( (n = sep_string (commande, " ", args, ARGC)) == 0){
+    if ( (n = sep_string (commande, " ", args, ARGC, 1)) == 0){
       //On separe la commande passer
       printf ("Oups, il y a eu un soucis avec la commande passé!\n");
       return -1;
@@ -100,8 +101,8 @@ int main () {
     memset (commande, 0, strlen(commande)); 
   }
 
-  save (lTag, lFic, "TAG.csv", "FIC.csv");
-  printf ("les tags ont bien été sauvegardés.\n");
+  /*save (lTag, lFic, "TAG.csv", "FIC.csv");
+    printf ("les tags ont bien été sauvegardés.\n");*/
   detruire_liste (lFic);
   detruire_liste (lTag);
   free (commande);

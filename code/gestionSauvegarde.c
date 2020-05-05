@@ -80,12 +80,8 @@ int saveFile (liste lFile, FILE *f){
 
 int load (liste lTag, liste lFile, char *fileT, char *fileF){
   FILE *ft = fopen (fileT, "r");
-  if(ft!=NULL && loadTag(lTag,ft))
-    return 1;
-  else
-    return 0;
   FILE *ff = fopen(fileF, "r");
-  if(ff!=NULL && loadFile(lFile,lTag,ff))
+  if(ft!=NULL && ff!=NULL && loadTag (lTag, ft) && loadFile (lFile,lTag,ff))
     return 1;
   else
     return 0;
@@ -93,46 +89,57 @@ int load (liste lTag, liste lFile, char *fileT, char *fileF){
 
 //charge les fichiers et les tags à partir des fichiers fileT et fileF
 int loadTag (liste lTag, FILE *f){
-  char *tab[100];
+  char *tab[50];
+  for (int c = 0; c<50; c++){
+    tab[c] = malloc (50*sizeof(char));
+    tab[c][0] = '\0';
+  }
   char buff[500];
   int i;
   tag *t;
   liste lPere;
   while (fgets(buff, 500, f)){ 
-      i=sep_string(buff, SEP, tab, 100);
-
-      lPere = creer_liste();
-      for (int j = 1; j<i; j++) {
-	if ((t = getTag (tab[j], lTag)) == NULL){
-	  t = creerTag (tab[j], creer_liste(), lTag);
-	  if(t==NULL)
-	    return 0;
+    i=sep_string(buff, SEP, tab, 50, 0);
+    
+    lPere = creer_liste();
+    for (int j = 1; j<i; j++) {
+      if ((t = getTag (tab[j], lTag)) == NULL){
+	t = creerTag (tab[j], creer_liste(), lTag);
+	if(t==NULL){
+	  for (int c = 0; c>50; c++)
+	    free (tab[c]);
+	  return 0;
 	}
-	insere_apres (lPere, t);
       }
-      if ((t = getTag (tab[0], lTag)) == NULL){
-	if(creerTag (tab[0], lPere, lTag) ==NULL)
-	  return 0;
-      }
-      else{
-	if(ajouterPere (t, lPere)==NULL)
-	  return 0;
-	if(!detruire_liste (lPere))
-	  return 0;
+      insere_apres (lPere, t);
+    }
+    if ((t = getTag (tab[0], lTag)) == NULL)
+      t = creerTag (tab[0], creer_liste(), lTag); 
+    ajouterPere (t, lPere);
 
-      }
+    if(!detruire_liste (lPere)){
+      for (int c = 0; c>50; c++)
+	free (tab[c]);
+      return 0;
+    }
   }
+  for (int c = 0; c>50; c++)
+    free (tab[c]); 
   return 1;  
 }
 
 int loadFile (liste lFile,liste lTag, FILE *f){
-  char *tab[100];
+  char *tab[50];
+  for (int c = 0; c<50; c++){
+    tab[c] = malloc (50*sizeof(char));
+    tab[c][0] = '\0';
+  }
   char buff[500];
   int i;
   tag *t;
   liste tag;
   while (fgets(buff, 500, f)){ 
-    i=sep_string(buff, SEP, tab, 100);
+    i=sep_string(buff, SEP, tab, 100, 0);
     
     tag = creer_liste();
     for (int j = 2; j<i; j++) {
@@ -144,13 +151,24 @@ int loadFile (liste lFile,liste lTag, FILE *f){
       insere_apres (tag, t);
     }
     fichier *new = creerFichier(atoi(tab[0]), tab[1], lFile);
-    if (new == NULL)
+    if (new == NULL){
+      for (int c = 0; c>50; c++)
+	free (tab[c]);
       return 0;
-    if (ajouterTag(new, tag)==NULL)
+    }
+    if (ajouterTag(new, tag)==NULL){
+      for (int c = 0; c>50; c++)
+	free (tab[c]);
       return 0;
-    if(!detruire_liste(tag))
+    }
+    if(!detruire_liste(tag)){
+      for (int c = 0; c>50; c++)
+	free (tab[c]);
       return 0;
+    }
   }
+  for (int c = 0; c>50; c++)
+    free (tab[c]);
   return 1;
 }
 

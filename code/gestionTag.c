@@ -42,6 +42,8 @@ liste suppTag (tag eviltag, liste ltag){
  *retourne un pointeur vers le tag orphelin
  */
 tag * ajouterPere (tag * orphelin, liste newfather){
+  if (est_vide (newfather))
+    return orphelin;
   liste proudfather =creer_liste();
   liste test =creer_liste();
   liste tmp =newfather->suivant;
@@ -49,7 +51,7 @@ tag * ajouterPere (tag * orphelin, liste newfather){
     insere_apres(test,tmp);
     if(tagAbsent(orphelin->pere, test))
       insere_apres(proudfather,tmp);
-    vide_liste(test);
+    detruire_liste(test);
     tmp=tmp->suivant;
   }
   liste newpere = fusionner (orphelin -> pere, proudfather);
@@ -86,24 +88,31 @@ tag * supprimerPere (tag * orphelin, liste lostfather){
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
 int tagPresent (liste tFichier, liste present){
+  if (est_vide (present))
+    return 1;
   if (est_vide (tFichier))
     return 0;
-  else {
-    present = suivant(present);
-    do {
-      tFichier = suivant (tFichier);
-      while (tFichier->val != present->val && !est_tete(present))
-	present = suivant (present);
-      if (!est_tete(present)){
-	present = suivant (present);
-	supprimer_element (precedent (present));
-	present = getTete (present);
-      }
-      tagPresent (((tag *)tFichier->val)->pere, present);
-    }while (!est_tete (tFichier) && !est_vide (present));
-    if (est_vide (present))
-      return 1;
+  
+  liste cp = copier (present);
+  tFichier = suivant (getTete(tFichier));
+
+  while (!est_vide (cp) && !est_tete (tFichier)) {//pour chaque element de tFichier
+    cp = suivant (getTete(cp));
+
+    while (!est_tete (cp)) {//On test pour chaque element de cp
+      if (cp->val == tFichier->val){
+	cp = suivant (cp);
+	supprimer_element(precedent (cp));
+      }else
+	cp = suivant(cp);
+    }
+
+    tagPresent (((tag *)tFichier->val)->pere, present);
+    tFichier = suivant (tFichier);
   }
+
+  if (est_vide (cp))
+    return 1;
   return 0;
 }
 
@@ -125,10 +134,10 @@ int tagAbsent (liste tFichier, liste absent){
 
 /*retourne le tag associé au nom ou NULL si il n'existe pas*/
 tag * getTag (char *nom, liste ltag){
-  liste tmp = ltag -> suivant;
+  liste tmp = suivant(getTete(ltag));
   if (est_tete(tmp)) 
     return NULL;
-  while (!strcmp(((tag *)(tmp -> val))-> nom, nom)){
+  while (strcmp(((tag *)(tmp -> val))-> nom, nom) != 0){
     tmp = tmp -> suivant;
     if (est_tete(tmp)) 
       return NULL;
@@ -139,7 +148,8 @@ tag * getTag (char *nom, liste ltag){
 /*affiche une liste de tag */
 void afficherTag (liste ltag){
   liste tagelem =ltag -> suivant;
-  char *result = "Liste des tags";
+  char *result = malloc (500 * sizeof(char));
+  strcat (result, "Liste des tags");
   while (!est_tete(tagelem)){
     result = strcat(result, ",");
     result = strcat(result, ((tag *)(tagelem -> val))-> nom);
@@ -147,14 +157,16 @@ void afficherTag (liste ltag){
   }
   result = strcat (result, "\n");
   printf("%s", result);
+  free (result);
 }
 
 /*affiche les tags de la liste et leur peres associé */
 void afficherFamilleTag (liste ltag){
-  //liste tmp = ltag -> suivant;
-  //char *result = "Liste des tags";
-  //affichier le tag
-  //si la liste de pere est vide on s'arette la
-  //sinon je relance la fonction sur la liste des peres
-  
+  ltag = suivant (getTete (ltag));
+  while (!est_tete (ltag)) {
+    printf ("--%s\n", ((tag *)ltag->val)->nom);
+    if (!est_vide (((tag *)ltag->val)->pere))
+      afficherFamilleTag (((tag*)ltag->val)->pere);
+    ltag = suivant (ltag);
+  }
 }

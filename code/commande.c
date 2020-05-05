@@ -192,7 +192,7 @@ int mv (char* argv[], size_t t, liste lTag, liste lFic){
     }
 
     if (!option) {
-      n = sep_string (argv[utile+1], "/", tab, 25);
+      n = sep_string (argv[utile+1], "/", tab, 25, 0);
       if (stat (argv[utile], &statbuf) == -1)
 	printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
       else{
@@ -229,7 +229,7 @@ int cp (char* argv[], size_t t, liste lTag, liste lFic){
 
     if (option) {
       for (int i = utile+1; i<t; i++) {
-	n = sep_string (argv[i], "/", tab, 25);
+	n = sep_string (argv[i], "/", tab, 25, 0);
 	strcpy (path, argv[1]);
 	strcat (path, tab[n-1]);
 	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
@@ -241,7 +241,7 @@ int cp (char* argv[], size_t t, liste lTag, liste lFic){
       }
     }else {
       for (int i = utile; i<t-1; i++) {
-	n = sep_string (argv[i], "/", tab, 25);
+	n = sep_string (argv[i], "/", tab, 25, 0);
 	strcpy (path, argv[t-1]);
 	strcat (path, tab[n-1]);
 	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
@@ -275,18 +275,18 @@ int rm (char* argv[], size_t t, liste lTag, liste lFic){
 
 
 
-int sep_string (char *com, char *c, char *argv[], int argc) {
+int sep_string (char *com, char *c, char *argv[], int argc, int commande) {
   char *tmp = strtok (com, c);
   int n = 0;
   
   while (n<argc-1 && tmp != NULL) {
     if (tmp [strlen(tmp)-1] == '\n')
       tmp [strlen(tmp)-1] = '\0';
-    strcpy( argv[n++], tmp);
+    strcpy (argv[n++], tmp);
     tmp = strtok (NULL, c);
   }
 
-  if (n < argc-1) {
+  if (n < argc-1 && commande) {
     free (argv[n]);
     argv[n] = NULL;
   }

@@ -24,7 +24,7 @@ InsTags : $(F)InsTags.o $(F)liste.o $(F)gestionSauvegarde.o $(F)fichier.o $(F)ge
 	gcc $(F)InsTags.o $(F)liste.o $(F)gestionSauvegarde.o $(F)fichier.o $(F)gestionTag.o $(F)commande.o -o InsTags
 
 clean :
-	rm -rf $(F)*~
+	rm -rf $(F)*~ *~
 
 cleanall :
-	rm -rf $(F)*~ $(F)*.o $(ALL)
+	rm -rf $(F)*~ $(F)*.o $(ALL) *~

@@ -34,7 +34,7 @@ int rm (char* argv[], size_t t, liste lTag, liste lFic);
 //traite la commande rm
 
 
-int sep_string (char *com, char *c, char *argv[], int argc);
+int sep_string (char *com, char *c, char *argv[], int argc, int commande);
 
 
 #endif

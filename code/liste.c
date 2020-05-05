@@ -72,7 +72,16 @@ int est_tete(liste l){
     return 1;
   else
     return 0;
+}
 
+/*liste *supprimer_elementN (liste l) {
+  if (est_tete (l))
+    return NULL;
+  liste previous = l->precedent;
+  liste next = l->suivant;
+  previous->suivant = next;
+  next->pecedent = previous;*/
+  
 /*supprimer_element (l) supprime un element de la liste
  * on ne peut pas supprimer la tete
  * retourne un pointeur vers les donnees supprimees, 
@@ -94,10 +103,12 @@ void *supprimer_element(liste l){
  *retourne la tete si la suppression a eu lieu, NULL sinon */
 
 liste vide_liste(liste l){
-  if (!est_tete(l))
-    return NULL;
-  for (liste tmp=l->suivant; !est_tete(tmp); tmp=tmp->suivant)
-    supprimer_element(tmp);
+  l = getTete (l);
+  l = suivant (l);
+  while (!est_tete (l)){
+    l = suivant (l);
+    supprimer_element (precedent(l));
+  }
   return l;
 }
 
@@ -120,17 +131,14 @@ int detruire_liste(liste l){
 
 liste fusionner(liste l, liste p){
   if (est_vide (l)) {
-    printf ("cas 1\n");
     detruire_liste (l);
     return p;
   }
   else if (est_vide (p)) {
-    printf ("cas 2\n");
     detruire_liste (p);
     return l;
   }
   else{
-    printf ("cas 3\n");
     l = getTete(l);
     p = getTete(p);
     p = suivant (p);
@@ -140,7 +148,6 @@ liste fusionner(liste l, liste p){
     }      
     if (! detruire_liste (p))
       return NULL;
-    printf ("fin cas 3\n");
   }
   return l;
 }
@@ -184,3 +191,14 @@ liste getTete (liste l){
   return tmp;
 }
 
+liste copier (liste l) {
+  liste res = creer_liste();
+  if (est_vide (l))
+    return res;
+  l = getTete (l);
+  while (!est_tete (l)){
+    inserer_avant (res, l->val);
+    l = suivant (l);
+  }
+  return l;
+}
