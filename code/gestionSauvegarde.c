@@ -98,13 +98,13 @@ int loadTag (liste lTag, FILE *f){
   int i;
   tag *t;
   liste lPere;
-  while (fgets(buff, 500, f)){ 
+  while (fgets(buff, 500, f)){
     i=sep_string(buff, SEP, tab, 50, 0);
     
     lPere = creer_liste();
     for (int j = 1; j<i; j++) {
       if ((t = getTag (tab[j], lTag)) == NULL){
-	t = creerTag (tab[j], creer_liste(), lTag);
+	t = creerTag (tab[j], lTag);
 	if(t==NULL){
 	  for (int c = 0; c>50; c++)
 	    free (tab[c]);
@@ -114,14 +114,8 @@ int loadTag (liste lTag, FILE *f){
       insere_apres (lPere, t);
     }
     if ((t = getTag (tab[0], lTag)) == NULL)
-      t = creerTag (tab[0], creer_liste(), lTag); 
+      t = creerTag (tab[0], lTag); 
     ajouterPere (t, lPere);
-
-    if(!detruire_liste (lPere)){
-      for (int c = 0; c>50; c++)
-	free (tab[c]);
-      return 0;
-    }
   }
   for (int c = 0; c>50; c++)
     free (tab[c]); 
@@ -144,7 +138,7 @@ int loadFile (liste lFile,liste lTag, FILE *f){
     tag = creer_liste();
     for (int j = 2; j<i; j++) {
       if ((t = getTag (tab[j], lTag)) == NULL){
-	  t = creerTag (tab[j], creer_liste(), lTag);
+	  t = creerTag (tab[j], lTag);
 	  if(t==NULL)
 	    return 0;
       }
@@ -157,11 +151,6 @@ int loadFile (liste lFile,liste lTag, FILE *f){
       return 0;
     }
     if (ajouterTag(new, tag)==NULL){
-      for (int c = 0; c>50; c++)
-	free (tab[c]);
-      return 0;
-    }
-    if(!detruire_liste(tag)){
       for (int c = 0; c>50; c++)
 	free (tab[c]);
       return 0;

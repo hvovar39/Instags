@@ -11,24 +11,28 @@ Creation, defenition de liens, ajout, deletion...
  *retourne la liste des tags
  *si la création à bien eu lieu
  */
-tag * creerTag (char *nom, liste pere, liste ltag){
+tag * creerTag (char *nom, liste ltag){
   tag * tag = malloc (sizeof(tag));
+  char *s = malloc (sizeof(char)*(strlen(nom) + 1));
+  s[0] = '\0';
   if (tag == NULL)
     return NULL;
-  tag -> nom = nom;
-  tag -> pere = pere;
+  strcpy (s, nom);
+  tag -> nom = s;
+  tag -> pere = creer_liste ();
+  ltag = getTete (ltag);
   if (inserer_avant (ltag, tag) == NULL)
     return NULL;
   else
     return tag;
 }
 
-/*Supprime eviltag de liste tags (en cas de gestion d'erreur)
- *retourne le liste de tag 
+/*Supprime eviltag de liste tags
+ *retourne la liste de tag 
  */ 
 liste suppTag (tag eviltag, liste ltag){
   if (est_vide (ltag))
-    return NULL;
+    return ltag;
   else {
     if (supprimer_element (getElem(&eviltag, ltag)) == NULL)
       return NULL;
@@ -44,41 +48,29 @@ liste suppTag (tag eviltag, liste ltag){
 tag * ajouterPere (tag * orphelin, liste newfather){
   if (est_vide (newfather))
     return orphelin;
-  liste proudfather =creer_liste();
-  liste test =creer_liste();
-  liste tmp =newfather->suivant;
-  while (!est_tete(tmp)){
-    insere_apres(test,tmp);
-    if(tagAbsent(orphelin->pere, test))
-      insere_apres(proudfather,tmp);
-    detruire_liste(test);
-    tmp=tmp->suivant;
-  }
-  liste newpere = fusionner (orphelin -> pere, proudfather);
-  if (newpere == NULL)
+  if (fusionner (orphelin->pere, newfather) == NULL)
     return NULL;
-  else
-    orphelin -> pere = newpere;
   return orphelin;
 }
+  
 
 /*Supprime une liste de pere au tag orphelin 
  *retourne un pointeur vers le tag orphelin
  */
 tag * supprimerPere (tag * orphelin, liste lostfather){
-  liste tmp = orphelin -> pere -> suivant;
-  liste sup = lostfather -> suivant;
+  liste tmp = suivant (orphelin -> pere);
+  liste sup = suivant (getTete (lostfather));
   if (est_vide (lostfather))
     return orphelin;
-  while (sup -> val != NULL){
+  while (!est_tete (sup)){
     while (tmp -> val != sup -> val && !est_tete(tmp))
-	tmp = tmp -> suivant;
+      tmp = suivant (tmp);
     if (!est_tete(tmp)){
-      if (supprimer_element(tmp) == NULL)
+      tmp = suivant (tmp);
+      if (supprimer_element (precedent (tmp)) == NULL)
 	return NULL;
     }
     sup = sup -> suivant;
-    tmp = orphelin -> pere -> suivant;
   }
   return orphelin;
 }
@@ -147,13 +139,21 @@ tag * getTag (char *nom, liste ltag){
 
 /*affiche une liste de tag */
 void afficherTag (liste ltag){
-  liste tagelem =ltag -> suivant;
   char *result = malloc (500 * sizeof(char));
-  strcat (result, "Liste des tags");
-  while (!est_tete(tagelem)){
-    result = strcat(result, ",");
-    result = strcat(result, ((tag *)(tagelem -> val))-> nom);
+  result[0]='\0';
+  if (est_vide (ltag))
+    strcpy(result, "La liste est vide.\n");
+  else {
+    ltag = getTete (ltag);
+    liste tagelem = ltag -> suivant;
+    strcat (result, "Liste des tags: ");
+    strcat (result, ((tag *)(tagelem -> val))-> nom);
     tagelem = tagelem -> suivant;
+    while (!est_tete(tagelem)){
+      result = strcat(result, ",");
+      result = strcat(result, ((tag *)(tagelem -> val))-> nom);
+      tagelem = tagelem -> suivant;
+    }
   }
   result = strcat (result, "\n");
   printf("%s", result);

@@ -28,9 +28,6 @@ liste suppFichier (fichier *f, liste lFichier);
 /* retourn un fichier a partir de son inode */
 fichier *getFichierI (int inode, liste lFichier);
 
-/*retourn un fichier à partir de son chemin */
-fichier *getFichierP (char *path, liste lfichier);
-
 //Fonctions de gestion du lien fichier/tag
 
 /*Ajouter une liste de tag au fichier f

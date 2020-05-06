@@ -48,7 +48,9 @@ int main () {
   liste lTag = creer_liste();
   liste lFic = creer_liste();
   loadFic (lTag, lFic);
-  afficherFamilleTag(lTag);
+  lTag = getTete (lTag);
+  lFic = getTete (lFic);
+  afficherTag (lTag);
   printf (">");
   
   while (fgets(commande, 500, stdin)) {
@@ -101,8 +103,8 @@ int main () {
     memset (commande, 0, strlen(commande)); 
   }
 
-  /*save (lTag, lFic, "TAG.csv", "FIC.csv");
-    printf ("les tags ont bien été sauvegardés.\n");*/
+  save (lTag, lFic, "TAG.csv", "FIC.csv");
+  printf ("les tags ont bien été sauvegardés.\n");
   detruire_liste (lFic);
   detruire_liste (lTag);
   free (commande);

@@ -16,13 +16,17 @@ fichier *creerFichier (int inode, char *path, liste lFichier){
   fichier * fichier = malloc (sizeof(fichier));
   if (fichier == NULL)
     return NULL;
+  char * nom = malloc (sizeof (char) *(strlen (path)+1));
+  nom[0] = '\0';
+  strcpy (nom, path);
   fichier -> inode = inode;
-  fichier -> path = path;
+  fichier -> path = nom;
   liste ltag = creer_liste ();
   if (ltag == NULL)
     return NULL;
   fichier -> tag = ltag;
-  if (inserer_avant (lFichier, fichier)== NULL)
+  lFichier = getTete (lFichier);
+  if (inserer_avant (lFichier, fichier) == NULL)
     return NULL;
   return fichier;
 }
@@ -45,29 +49,12 @@ liste suppFichier (fichier *f, liste lFichier){
 /* retourn un fichier a partir de son inode */
 
 fichier *getFichierI (int inode, liste lFichier){
-  liste tmp = lFichier -> suivant;
-  if (est_tete (tmp))
+  lFichier = suivant (getTete (lFichier));
+  while (!est_tete (lFichier) && ((fichier *)(lFichier -> val))-> inode != inode)
+    lFichier = suivant (lFichier);
+  if (est_tete (lFichier))
     return NULL;
-  while (((fichier *)(tmp -> val))-> inode != inode){
-    tmp = tmp -> suivant;
-    if (est_tete(tmp)) 
-      return NULL;
-  }
-  return tmp -> val;
-}
-
-/*retourn un fichier à partir de son chemin */
-
-fichier *getFichierP (char *path, liste lFichier){
-  liste tmp = lFichier -> suivant;
-  if (est_tete (tmp))
-    return NULL;
-  while (!strcmp(((fichier *)(tmp -> val))->path, path)){
-      tmp = tmp -> suivant;
-    if (est_tete(tmp)) 
-      return NULL;
-  }
-  return tmp -> val;
+  return lFichier -> val;
 }
 
 //Fonctions de gestion du lien fichier/tag
@@ -77,11 +64,7 @@ fichier *getFichierP (char *path, liste lFichier){
  */
 
 fichier *ajouterTag (fichier *f, liste t){
-  t = fusionner (f -> tag, t);
-  if (t == NULL)
-    return NULL;
-  else
-    f -> tag = t;
+  fusionner (f -> tag, t);
   return f;
 }
 
@@ -89,31 +72,26 @@ fichier *ajouterTag (fichier *f, liste t){
  *retourne un pointeur vers le fichier f
  */
 fichier *retirerTag (fichier *f, liste t){
-  liste tmp = f -> tag -> suivant;
-  liste sup = t -> suivant;
+  liste tmp = suivant (f -> tag);
+  liste sup = suivant (getTete (t));
   if (est_vide (t))
     return f;
-  while (sup -> val != NULL){
+  while (!est_tete (t)){
     while (tmp -> val != sup -> val && !est_tete(tmp))
 	tmp = tmp -> suivant;
     if (!est_tete(tmp)){
-      if (supprimer_element(tmp) == NULL)
+      tmp = suivant (tmp);
+      if (supprimer_element(precedent (tmp)) == NULL)
 	return NULL;
     }
-    sup = sup -> suivant;
-    tmp = f -> tag -> suivant;
+    sup = suivant (sup);
   }
   return f;
 }
 
-
-
-
-
 /*estTaguer verifie si la liste est taguer par tliste 
  *mais pas par nTListe, 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-
 int estTaguer (fichier *f, liste tListe, liste nTListe){
   if (tagPresent (f->tag, tListe) && tagAbsent (f->tag, nTListe))
     return 1;
@@ -127,7 +105,7 @@ liste getFichierTaguer (liste lfichier, liste tagPst, liste tagAbs){
   liste result = creer_liste ();
   if (result == NULL)
     return NULL;
-  liste tmp = lfichier -> suivant;
+  liste tmp = suivant (getTete (lfichier));
   while (!est_tete(tmp)){
     if (estTaguer(tmp -> val, tagPst, tagAbs)){
       if (inserer_avant (result, tmp-> val)==NULL)
@@ -139,16 +117,15 @@ liste getFichierTaguer (liste lfichier, liste tagPst, liste tagAbs){
 }
 
 /*modifie le chemin absolu vers le fichier */
-
 fichier *changerPath (fichier *f, char *newPath){
-  f -> path = newPath;
+  f->path = realloc (f->path, sizeof (char) * (strlen (newPath) - 1));
+  strcpy (f->path, newPath);
   return f;
 }
 
 /*creer un nouveau fichier avec les même tag que f 
  *mais un nouvel inode et un nouveau chemin 
  *retourn NULL si la copie n'a pas eu lieu*/
-
 fichier *cpFichier (fichier *f, int newInode, char *newPath, liste  lfichier){
   fichier *newf = creerFichier(newInode, newPath, lfichier);
   if (newf == NULL)

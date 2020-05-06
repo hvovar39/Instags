@@ -15,7 +15,7 @@ struct tag {
 typedef struct tag tag;
 
 
-tag *creerTag (char *nom, liste pere, liste ltag);
+tag *creerTag (char *nom, liste ltag);
 /*Creer un tag et le met dans le liste de Tag, 
  *si la création à bien eu lieu
  */

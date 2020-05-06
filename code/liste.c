@@ -130,18 +130,13 @@ int detruire_liste(liste l){
 /*fusinne les deux liste l et p et retourne la liste definitive*/
 
 liste fusionner(liste l, liste p){
-  if (est_vide (l)) {
-    detruire_liste (l);
-    return p;
-  }
-  else if (est_vide (p)) {
+  if (est_vide (p)) {
     detruire_liste (p);
     return l;
   }
   else{
-    l = getTete(l);
-    p = getTete(p);
-    p = suivant (p);
+    l = getTete (l);
+    p = suivant (getTete (p));
     while (!est_tete(p)){
       insere_apres (l, p->val);
       p = suivant (p);
@@ -183,12 +178,9 @@ liste getElem (void * v, liste l){
 }
 
 liste getTete (liste l){
-  if (est_tete(l))
-    return l;
-  liste tmp = l -> suivant;
-  while (!est_tete(tmp))
-    tmp = tmp -> suivant;
-  return tmp;
+  while (!est_tete(l))
+    l = l -> suivant;
+  return l;
 }
 
 liste copier (liste l) {
@@ -200,5 +192,5 @@ liste copier (liste l) {
     inserer_avant (res, l->val);
     l = suivant (l);
   }
-  return l;
+  return res;
 }

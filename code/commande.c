@@ -61,7 +61,7 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   tag * newTag;
   for (int i = 2; i<t; i++) {
     if ((newTag = getTag (argv[i], lTag)) == NULL){
-      newTag = creerTag (argv[i], creer_liste(), lTag);
+      newTag = creerTag (argv[i], lTag);
     }
     insere_apres (tags, newTag);
   }
@@ -75,7 +75,6 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   for (int j = 2; j<t; j++)
     printf (" %s", argv[j]);
   printf (" ont bien été ajouté au fichier %s.\n", argv[1]);
-  detruire_liste (tags);
   return 1;
 }
 
@@ -102,7 +101,7 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
   tag * newTag;
   for (int i = 2; i<t; i++) {
     if ((newTag = getTag (argv[i], lTag)) == NULL){
-      newTag = creerTag (argv[i], creer_liste(), lTag);
+      newTag = creerTag (argv[i], lTag);
     }
     insere_apres (tags, newTag);
   }
@@ -141,7 +140,7 @@ int lt (char* argv[], size_t t, liste lTag, liste lFic){
       if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL)
 	fic = creerFichier (statbuf.st_ino, argv[1], lFic);
       printf ("--%s :\n", argv[i]);
-      afficherTag (fic->tag);
+      afficherFamilleTag (fic->tag);
       res ++;
     }
   }
@@ -162,13 +161,13 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
   liste lPere = creer_liste();
   for (int i = 2; i<t; i++) {
     if ((pere = getTag (argv[i], lTag)) == NULL)
-      pere = creerTag (argv[i], creer_liste(), lTag);
+      pere = creerTag (argv[i], lTag);
     insere_apres (lPere, pere);
   }
   
   tag *fils;
   if ((fils = getTag (argv[1], lTag)) == NULL)
-    creerTag (argv[1], lPere, lTag);
+    creerTag (argv[1], lTag);
   else
     ajouterPere (fils, lPere);
 
