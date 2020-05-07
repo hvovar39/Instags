@@ -15,12 +15,16 @@ int ls (char * argv[], size_t t, liste lTag, liste lFic) {
   liste conj;
   liste neg;
   liste fic;
-  if ( t<3 || strcmp (argv[1], "-TAG")){
+  if ( t<2 || strcmp (argv[1], "-TAG")){
     if (fork() == 0)
       execvp ("ls", argv);
     return 1;
   }
   else {
+    if (t==2){
+      printf ("Il manque des arguments:\nls -TAG tag1 [tag2] [tag3] ...\n");
+      return -1;
+    }
     conj = creer_liste();
     neg = creer_liste();
     for (int i = 2; i<t; i++) {
@@ -98,14 +102,12 @@ int untag (char* argv[], size_t t, liste lTag, liste lFic) {
   } 
 
   liste tags = creer_liste();
-  tag * newTag;
+  tag *sup;
   for (int i = 2; i<t; i++) {
-    if ((newTag = getTag (argv[i], lTag)) == NULL){
-      newTag = creerTag (argv[i], lTag);
-    }
-    insere_apres (tags, newTag);
+    if ((sup = getTag (argv[i], lTag)) != NULL)
+      insere_apres (tags, sup);
   }
-  
+    
   if (retirerTag (fic, tags) == NULL) {
     printf ("Oups! Il y a eu un soucis dans la deletions des tags.\n");
     detruire_liste (tags);

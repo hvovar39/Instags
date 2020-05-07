@@ -25,33 +25,34 @@ int save (liste lTag, liste lFile, char *fileT, char * fileF){
 //Sauvegarde la liste des tags dans le fichier f (nom du tag et noms des peres, separer par SEP et un saut de ligne apres chaque tag.
 //retourne 0 en cas d'échec et 1 si la sauvegarde à bien marché.
 int saveTag (liste lTag, FILE *f){
-  char *result=malloc (500*sizeof(char));
+  char *result=malloc (1000*sizeof(char));
   result[0]='\0';
   if (result==NULL)
     return 0;
-  liste tmp = getTete(lTag);
-  tmp = tmp -> suivant;
-  while (!est_tete(tmp)){
-    result = strcat(result,((tag *)(tmp->val))->nom);
-    liste tmppere = getTete(((tag *)(tmp->val))->pere);
-    tmppere=tmppere ->suivant;
+  liste tmp = suivant (getTete (lTag));
+  liste tmppere;
+  while (!est_tete (tmp)){
+    result = strcat (result, ((tag *)tmp->val)->nom);
+    tmppere = suivant (getTete (((tag *)tmp->val)->pere));
     while (!est_tete(tmppere)){
-      result=strcat(result,SEP);
-      result=strcat(result,((tag *)(tmppere->val))->nom);
+      result = strcat (result, SEP);
+      result = strcat (result, ((tag *)tmppere->val)->nom);
+      tmppere = suivant (tmppere);
     }
-    result = strcat(result,"\n");
-    fprintf(f,"%s",result);
-    memset(result, 0, strlen(result));
-    result[0]='\0';
+    result = strcat (result, "\n");
+    fprintf (f, "%s", result);
+    memset (result, 0, strlen (result));
+    result[0] = '\0';
+    tmp = suivant (tmp);
   }
-  free(result);
+  free (result);
   return 1;
 }
 
 
 //Sauvegarde la liste des fichiers dans le fichier f
 int saveFile (liste lFile, FILE *f){
-  char *result=malloc (500*sizeof(char));
+  char *result=malloc (100*sizeof(char));
   char buff[20];
   result[0]='\0';
   if (result==NULL)
@@ -68,11 +69,13 @@ int saveFile (liste lFile, FILE *f){
     while (!est_tete(tmptag)){
       result=strcat(result,SEP);
       result=strcat(result,((tag *)(tmptag->val))->nom);
+      tmptag = suivant (tmptag);
     }
     result = strcat(result,"\n");
     fprintf(f,"%s",result);
     memset(result, 0, strlen(result));
     result[0]='\0';
+    tmp = suivant(tmp);
   }
   free(result);
   return 1;

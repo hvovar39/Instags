@@ -85,25 +85,25 @@ int tagPresent (liste tFichier, liste present){
   if (est_vide (tFichier))
     return 0;
   
-  liste cp = copier (present);
+  present = suivant (getTete (present));
   tFichier = suivant (getTete(tFichier));
 
-  while (!est_vide (cp) && !est_tete (tFichier)) {//pour chaque element de tFichier
-    cp = suivant (getTete(cp));
+  while (!est_vide (present) && !est_tete (tFichier)) {//pour chaque element de tFichier
+    present = suivant (getTete(present));
 
-    while (!est_tete (cp)) {//On test pour chaque element de cp
-      if (cp->val == tFichier->val){
-	cp = suivant (cp);
-	supprimer_element(precedent (cp));
+    while (!est_tete (present)) {//On test pour chaque element de cp
+      if (strcmp (((tag *)present->val)->nom, ((tag *)tFichier->val)->nom) == 0){
+	present = suivant (present);
+	supprimer_element(precedent (present));
       }else
-	cp = suivant(cp);
+	present = suivant (present);
     }
 
     tagPresent (((tag *)tFichier->val)->pere, present);
     tFichier = suivant (tFichier);
   }
 
-  if (est_vide (cp))
+  if (est_vide (present))
     return 1;
   return 0;
 }

@@ -187,7 +187,7 @@ liste copier (liste l) {
   liste res = creer_liste();
   if (est_vide (l))
     return res;
-  l = getTete (l);
+  l = suivant (getTete (l));
   while (!est_tete (l)){
     inserer_avant (res, l->val);
     l = suivant (l);

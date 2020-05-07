@@ -31,7 +31,7 @@ Contient la boucle d'interaction
 int loadFic (liste, liste);
 void init_arg (char *[]);
 void re_init_arg (char *[]);
-
+int saveFic (liste, liste, char *);
 
 /*MAIN
 ================================================================
@@ -43,8 +43,10 @@ int main () {
   char buf [100];
   char *args[ARGC];
   init_arg (args);
-  
 
+  char savePath[100];
+  getcwd (savePath, 100);
+  
   liste lTag = creer_liste();
   liste lFic = creer_liste();
   loadFic (lTag, lFic);
@@ -103,8 +105,7 @@ int main () {
     memset (commande, 0, strlen(commande)); 
   }
 
-  save (lTag, lFic, "TAG.csv", "FIC.csv");
-  printf ("les tags ont bien été sauvegardés.\n");
+  saveFic (lTag, lFic, savePath);
   detruire_liste (lFic);
   detruire_liste (lTag);
   free (commande);
@@ -148,3 +149,27 @@ void re_init_arg (char *argv[]) {
 }
 
 
+int saveFic (liste lTag, liste lFic, char *path) {
+  char tag[120];
+  tag[0] = '\0';
+  strcat (tag, path);
+  strcat (tag, "TAG.csv");
+  char fic[120];
+  fic[0] = '\0';
+  strcat (fic, path);
+  strcat (fic, "FIC.csv");
+  
+  char buff[50];
+  printf ("Souhaitez vous sauvegarder les changements ?\n>");
+  fgets (buff, 50, stdin);
+  if (buff[0] == 'y' &&  save (lTag, lFic, tag, fic)){
+    printf ("Sauvegarde éfféctuée.n");
+    return 1;
+  }
+  else {
+    if (buff[0] == 'n')
+      return 1;
+    printf ("Oups, il y a eu un soucis de sauvegarde.\n");
+  }
+  return 0;
+}

@@ -72,16 +72,16 @@ fichier *ajouterTag (fichier *f, liste t){
  *retourne un pointeur vers le fichier f
  */
 fichier *retirerTag (fichier *f, liste t){
-  liste tmp = suivant (f -> tag);
-  liste sup = suivant (getTete (t));
   if (est_vide (t))
     return f;
-  while (!est_tete (t)){
-    while (tmp -> val != sup -> val && !est_tete(tmp))
-	tmp = tmp -> suivant;
+  liste tmp = suivant (f -> tag);
+  liste sup = suivant (getTete (t));
+  while (!est_tete (sup)){
+    while (!est_tete(tmp) && strcmp (((tag *)tmp->val)->nom, ((tag *)sup->val)->nom) != 0)
+      tmp = suivant (tmp);
     if (!est_tete(tmp)){
       tmp = suivant (tmp);
-      if (supprimer_element(precedent (tmp)) == NULL)
+      if (supprimer_element (precedent (tmp)) == NULL)
 	return NULL;
     }
     sup = suivant (sup);
@@ -106,12 +106,17 @@ liste getFichierTaguer (liste lfichier, liste tagPst, liste tagAbs){
   if (result == NULL)
     return NULL;
   liste tmp = suivant (getTete (lfichier));
+  liste cpPst, cpAbs;
   while (!est_tete(tmp)){
-    if (estTaguer(tmp -> val, tagPst, tagAbs)){
+    cpPst = copier (tagPst);
+    cpAbs = copier (tagAbs);
+    if (estTaguer(tmp -> val, cpPst, cpAbs)){
       if (inserer_avant (result, tmp-> val)==NULL)
 	return NULL;
     }
     tmp = tmp -> suivant;
+    detruire_liste (cpPst);
+    detruire_liste (cpAbs);
   }
   return result;
 }
