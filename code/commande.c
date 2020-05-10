@@ -2,6 +2,8 @@
 ================================================================
 */
 
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "commande.h"
 #include "liste.h"
 
@@ -27,18 +29,25 @@ int ls (char * argv[], size_t t, liste lTag, liste lFic) {
     }
     conj = creer_liste();
     neg = creer_liste();
+    tag *tConj;
+    tag *tNeg;
     for (int i = 2; i<t; i++) {
-      if (argv[i][0] == '!')
-	insere_apres (neg, getTag (argv[i]+1, lTag));
-      else
-	insere_apres (conj, getTag (argv[i], lTag));
+      if (argv[i][0] == '!') {
+	if ((tNeg = getTag (argv[i]+1, lTag)) != NULL)
+	  insere_apres (neg, tNeg);
+      }else{
+	if ((tConj = getTag (argv[i], lTag)) != NULL)
+	  insere_apres (conj, tConj);
+      }
     }
-    fic = getFichierTaguer (lFic, conj, neg);
-    afficherListeFic (fic);
+    if (!est_vide (conj) || !est_vide (neg)) {
+      fic = getFichierTaguer (lFic, conj, neg);
+      afficherListeFic (fic);
+      detruire_liste(fic);
+    }
   }
   detruire_liste(conj);
   detruire_liste(neg);
-  detruire_liste(fic);
   return 1;
 }
 
@@ -155,7 +164,7 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
     creer les tags qui n'existent pas
   */
   if (t<3) {
-    printf ("Il manque des arguments:\nSONTAG fichierFils fichierPere1 [fichierPere2] ...\n");
+    printf ("Il manque des arguments:\nSONTAG tagFils tagPere1 [tagPere2] ...\n");
     return -1;
   }
 
@@ -169,11 +178,9 @@ int sontag (char* argv[], size_t t, liste lTag, liste lFic){
   
   tag *fils;
   if ((fils = getTag (argv[1], lTag)) == NULL)
-    creerTag (argv[1], lTag);
-  else
-    ajouterPere (fils, lPere);
+    fils = creerTag (argv[1], lTag);
+  ajouterPere (fils, lPere);
 
-  detruire_liste (lPere);
   return 1;
 }
 
@@ -181,79 +188,111 @@ int mv (char* argv[], size_t t, liste lTag, liste lFic){
   /*traite la commande mv.
     Change le nom du fichier concerné.
   */
-
-  fichier * fic;
+  int flagOp = 0, i = 1, n;
+  char *newName[50];
   struct stat statbuf;
-  int utile = 1, option = 0, n;
-  char *tab[25];
+  fichier *fic;
+  for (int  i = 0; i<50; i++){
+    newName[i] = malloc (sizeof (char)*50);
+    newName[i][0] = '\0';
+  }
+  
   if (t>=3) {
-    while (argv[utile][0] == '-'){
-      if (strchr (argv[utile++], 't') != NULL)
-	option++;
+    while (argv[i][0] == '-'){
+      if (strchr (argv[i], 't'))
+	flagOp++;
+      i++;
     }
 
-    if (!option) {
-      n = sep_string (argv[utile+1], "/", tab, 25, 0);
-      if (stat (argv[utile], &statbuf) == -1)
-	printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
-      else{
-	if ((fic = getFichierI (statbuf.st_ino, lFic)) != NULL)
-	  fic->path = tab[n-1];
+    if (!flagOp) {
+      n = sep_string (argv[i+1], "/", newName, 50, 0);
+      if (stat (argv[i], &statbuf) == -1 || (fic = getFichierI (statbuf.st_ino, lFic)) == NULL) {
+	printf ("Oups, je n'ai pas trouvé le fichier demandé.\n");
+	for (int i = 0; i<50; i++)
+	  free (newName[i]);
+	return -1;
+      }
+      if (changerPath (fic, newName[n-1]) == NULL) {
+	printf ("Oups, il y a eu un soucis de déplacement du fichier.\n");
+	for (int i = 0; i<50; i++)
+	  free (newName[i]);
+	return -2;
       }
     }
   }
 
-  if (fork() == 0)
-    execvp ("mv", argv);
-
+  if (fork() == 0 && execvp ("mv", argv) == -1)
+    return -3;
+      	
+  for (int i = 0; i<50; i++)
+    free (newName[i]);	
   return 1;
 }
 
 
 int cp (char* argv[], size_t t, liste lTag, liste lFic){
 //traite la commande cp
-  if (fork() == 0)
-    execvp ("cp", argv);
+  if (fork() == 0 && execvp ("cp", argv) == -1)
+    return -1;
+  wait (NULL);
   
   fichier *ficO;
   fichier *ficC;
-  struct stat statbufO, statbufC;
+  struct stat statbufO;
+  struct stat statbufC;
   int utile = 1, option = 0, n;
   char *tab[25];
-  char path[200];
+  for (int  i = 0; i<25; i++){
+    tab[i] = malloc (sizeof (char) * 25);
+    tab[i][0] = '\0';
+  }
+  char *path = malloc (sizeof (char) * 200);
+  path[0] = '\0';
   if (t>=3) {
     while (argv[utile][0] == '-'){
-      if (strchr (argv[utile++], 't') != NULL)
-
+      if (strchr (argv[utile++], 't'))
 	option++;
     }
 
     if (option) {
       for (int i = utile+1; i<t; i++) {
-	n = sep_string (argv[i], "/", tab, 25, 0);
-	strcpy (path, argv[1]);
-	strcat (path, tab[n-1]);
-	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
-	  printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
-	else{
-	  if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL && (ficO = getFichierI (statbufO.st_ino, lFic)) != NULL )
-	    ajouterTag (ficC, ficO->tag);
+	if (stat (argv[i], &statbufO) == -1)
+	  printf ("Oups! Je n'ai pas trouver le fichire d'origine.\n");
+	else if ((ficO = getFichierI (statbufO.st_ino, lFic)) != NULL) {
+	  n = sep_string (argv[i], "/", tab, 25, 0);
+	  strcpy (path, argv[utile]);
+	  strcat (path, "/");
+	  strcat (path, tab[n-1]);
+	  if (stat (path, &statbufC) == -1)
+	    printf ("Oups! Je n'ai pas trouvé le fichier copié.\n");
+	  else{
+	    if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL)
+	      ajouterTag (ficC, copier (ficO->tag));
+	  }
 	}
       }
-    }else {
+    } else {
       for (int i = utile; i<t-1; i++) {
-	n = sep_string (argv[i], "/", tab, 25, 0);
-	strcpy (path, argv[t-1]);
-	strcat (path, tab[n-1]);
-	if (stat (path, &statbufC) == -1 || stat (argv[i], &statbufO) == -1)
-	  printf ("Oups! Je n'ai pas trouvé le fichier demandé.\n");
-	else{
-	  if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL && (ficO = getFichierI (statbufO.st_ino, lFic)) != NULL )
-	    ajouterTag (ficC, ficO->tag);
+	if (stat (argv[i], &statbufO) == -1)
+	  printf ("Oups! Je n'ai pas trouver le fichire d'origine.\n");
+	else if ((ficO = getFichierI (statbufO.st_ino, lFic)) != NULL) {
+	  n = sep_string (argv[i], "/", tab, 25, 0);
+	  strcpy (path, argv[t-1]);
+	  strcat (path, "/");
+	  strcat (path, tab[n-1]);
+	  if (stat (path, &statbufC) == -1)
+	    printf ("Oups! Je n'ai pas trouvé le fichier copié.\n");
+	  else{
+	    if ((ficC = creerFichier (statbufC.st_ino, tab[n-1], lFic)) != NULL)
+	      ajouterTag (ficC, copier (ficO->tag));
+	  }
 	}
       }
     }
   }
+  
+  for (int i = 0; i<25; i++)
+    free (tab[i]);
   return 1;
 }
 

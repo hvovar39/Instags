@@ -9,16 +9,20 @@ Ecriture et lecture des fichiers de sauvegardes.
 
 //sauvegarde la liste des tags et des fichiers dans fileT et fileF
 int save (liste lTag, liste lFile, char *fileT, char * fileF){
-  FILE *ft =fopen (fileT, "w");
-  if(ft!=NULL && saveTag(lTag,ft))
-    return 1;
-  else
-    return 0;
-  FILE *ff = fopen(fileF, "w");
-  if(ff!=NULL && saveFile(lFile,ff))
-    return 1;
-  else
-    return 0;
+  FILE *ft;
+  FILE *ff;
+  if ((ft = fopen (fileT, "w")) != NULL) {
+    if ((ff = fopen (fileF, "w")) != NULL) {
+      if (saveTag (lTag, ft) && saveFile (lFile, ff)) {
+	fclose (ft);
+	fclose (ff);
+	return 1;
+      }
+      fclose (ff);     	
+    }
+    fclose (ft);
+  }
+  return 0;
 }
 
 
@@ -82,12 +86,20 @@ int saveFile (liste lFile, FILE *f){
 }
 
 int load (liste lTag, liste lFile, char *fileT, char *fileF){
-  FILE *ft = fopen (fileT, "r");
-  FILE *ff = fopen(fileF, "r");
-  if(ft!=NULL && ff!=NULL && loadTag (lTag, ft) && loadFile (lFile,lTag,ff))
-    return 1;
-  else
-    return 0;
+  FILE *ft;
+  FILE *ff;
+  if ((ft = fopen (fileT, "r")) != NULL) {
+    if ((ff = fopen (fileF, "r")) != NULL) {
+      if (loadTag (lTag, ft) && loadFile (lFile, lTag, ff)) {
+	fclose (ft);
+	fclose (ff);
+	return 1;
+      }
+      fclose (ff);     	
+    }
+    fclose (ft);
+  }
+  return 0;
 }
 
 //charge les fichiers et les tags à partir des fichiers fileT et fileF

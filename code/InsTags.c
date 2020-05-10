@@ -95,8 +95,8 @@ int main () {
     }
 
     else {
-      if (fork() == 0)
-	execvp (args[0], args);
+      if (fork() == 0 && execvp (args[0], args) == -1)
+	exit (0);
     }
     
     re_init_arg (args); //On re malloc ce qui a été free
@@ -153,17 +153,17 @@ int saveFic (liste lTag, liste lFic, char *path) {
   char tag[120];
   tag[0] = '\0';
   strcat (tag, path);
-  strcat (tag, "TAG.csv");
+  strcat (tag, "/TAG.csv");
   char fic[120];
   fic[0] = '\0';
   strcat (fic, path);
-  strcat (fic, "FIC.csv");
+  strcat (fic, "/FIC.csv");
   
   char buff[50];
   printf ("Souhaitez vous sauvegarder les changements ?\n>");
   fgets (buff, 50, stdin);
   if (buff[0] == 'y' &&  save (lTag, lFic, tag, fic)){
-    printf ("Sauvegarde éfféctuée.n");
+    printf ("Sauvegarde éfféctuée.\n");
     return 1;
   }
   else {
