@@ -62,8 +62,15 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   //On récupère ou creer le fichier concerné
   fichier * fic;
   struct stat statbuf;
+  char *tab[25];
+  for (int i = 0; i<25; i++){
+    tab [i] = malloc (sizeof (char) * 25);
+    tab[0] = '\0';
+  }
   if (stat (argv[1], &statbuf) == -1){
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
+    for (int i = 0; i<25; i++)
+      free (tab[i]);
     return -2;
   }
   if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL)
@@ -82,12 +89,16 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
 
   if (ajouterTag (fic, tags) == NULL) {
     detruire_liste (tags);
+    for (int i = 0; i<25; i++)
+      free (tab[i]);
     return -3;
   }
   printf ("Les tags");
   for (int j = 2; j<t; j++)
     printf (" %s", argv[j]);
   printf (" ont bien été ajouté au fichier %s.\n", argv[1]);
+  for (int i = 0; i<25; i++)
+      free (tab[i]);
   return 1;
 }
 
@@ -302,10 +313,12 @@ int rm (char* argv[], size_t t, liste lTag, liste lFic){
   fichier *fic;
   struct stat statbuf;
   for (int i = 1; i<t; i++) {
-    if (stat (argv[i], &statbuf) == -1)
+    if (lstat (argv[i], &statbuf) == -1)
       printf ("Oups! Le fichier demandé n'existe pas.\n");
-    if ((fic = getFichierI (statbuf.st_ino, lFic)) != NULL)
-      suppFichier (fic, lFic);
+    if (statbuf.st_nlink <= 1){
+      if ((fic = getFichierI (statbuf.st_ino, lFic)) != NULL)
+	suppFichier (fic, lFic);
+    }
   }
   if (fork() == 0)
     execvp ("rm", argv);

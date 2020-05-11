@@ -46,6 +46,8 @@ int main () {
 
   char savePath[100];
   getcwd (savePath, 100);
+
+  printf ("Instags\nMarianne LEMOINNE\nHugo VOVARD\n\nREADME\nBienvenue sur Instags, le système de gesion de tags de fichier. Ce projet a été réalisé dans le cadre du cours de Système de la L3 informatique de l'université de Paris.\nLes commandes que vous utilisez habituellement sur votre terminal fonctionne normalement. Pour les fonctionnement du sytème de tag, merci de consulter le README. Pour quitté le programme, utilisé la combinaison de touche ctrl+d.\n\n");
   
   liste lTag = creer_liste();
   liste lFic = creer_liste();
