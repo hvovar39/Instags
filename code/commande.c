@@ -63,6 +63,7 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   fichier * fic;
   struct stat statbuf;
   char *tab[25];
+  int n;
   for (int i = 0; i<25; i++){
     tab [i] = malloc (sizeof (char) * 25);
     tab[0] = '\0';
@@ -73,9 +74,11 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
       free (tab[i]);
     return -2;
   }
-  if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL)
-    fic = creerFichier (statbuf.st_ino, argv[1], lFic);
-
+  if ((fic = getFichierI (statbuf.st_ino, lFic)) == NULL){
+    n = sep_string (argv[1], "/", tab, 25, 0);
+    fic = creerFichier (statbuf.st_ino, tab[n-1], lFic);
+  }
+  
   //On ajoute les tags au fichier, et a lTag si besoin
   liste tags = creer_liste();
   tag * newTag;
