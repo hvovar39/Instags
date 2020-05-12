@@ -3,7 +3,16 @@ Code lier à la gestions des tags.
 Creation, defenition de liens, ajout, deletion...
 */
 
+/*INCLUDES
+================================================================
+*/
+
 #include "gestionTag.h"
+
+/*FONCTIONS
+================================================================
+*/
+
 
 /*La structure tag comporte un char * nom et un liste pere */
 
@@ -11,6 +20,7 @@ Creation, defenition de liens, ajout, deletion...
  *retourne la liste des tags
  *si la création à bien eu lieu
  */
+
 tag * creerTag (char *nom, liste ltag){
   tag * tag = malloc (sizeof(tag));
   char *s = malloc (sizeof(char)*(strlen(nom) + 1));
@@ -30,6 +40,7 @@ tag * creerTag (char *nom, liste ltag){
 /*Supprime eviltag de liste tags
  *retourne la liste de tag 
  */ 
+
 liste suppTag (tag eviltag, liste ltag){
   if (est_vide (ltag))
     return ltag;
@@ -45,6 +56,7 @@ liste suppTag (tag eviltag, liste ltag){
 /*Ajouter une liste de pere au tag orphelin 
  *retourne un pointeur vers le tag orphelin
  */
+
 tag * ajouterPere (tag * orphelin, liste newfather){
   if (est_vide (newfather))
     return orphelin;
@@ -53,10 +65,10 @@ tag * ajouterPere (tag * orphelin, liste newfather){
   return orphelin;
 }
   
-
 /*Supprime une liste de pere au tag orphelin 
  *retourne un pointeur vers le tag orphelin
  */
+
 tag * supprimerPere (tag * orphelin, liste lostfather){
   liste tmp = suivant (orphelin -> pere);
   liste sup = suivant (getTete (lostfather));
@@ -75,7 +87,7 @@ tag * supprimerPere (tag * orphelin, liste lostfather){
   return orphelin;
 }
 
-/*estTaguer verifie si le fichier f  est taguer 
+/*tagPresent verifie si le fichier f  est taguer 
  *par la liste de tag present 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
@@ -108,7 +120,7 @@ int tagPresent (liste tFichier, liste present){
   return 0;
 }
 
-/*estTaguer verifie si le fichier f ne possede pas absent
+/*tagAbsent verifie si le fichier f ne possede pas absent
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
 
 int tagAbsent (liste tFichier, liste absent){
@@ -125,6 +137,7 @@ int tagAbsent (liste tFichier, liste absent){
 }
 
 /*retourne le tag associé au nom ou NULL si il n'existe pas*/
+
 tag * getTag (char *nom, liste ltag){
   liste tmp = suivant(getTete(ltag));
   if (est_tete(tmp)) 
@@ -138,6 +151,7 @@ tag * getTag (char *nom, liste ltag){
 }
 
 /*affiche une liste de tag */
+
 void afficherTag (liste ltag){
   char *result = malloc (500 * sizeof(char));
   result[0]='\0';
@@ -161,6 +175,7 @@ void afficherTag (liste ltag){
 }
 
 /*affiche les tags de la liste et leur peres associé */
+
 void afficherFamilleTag (liste ltag){
   ltag = suivant (getTete (ltag));
   while (!est_tete (ltag)) {

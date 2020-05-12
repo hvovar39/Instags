@@ -1,3 +1,13 @@
+/*fichier.h
+Code faisant le liens fichier/tag
+Fonction lier aux commandes (addtags, untag, lt, ...)
+utilise getsionTag.c
+*/
+
+/*INCLUDES
+================================================================
+*/
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,12 +18,17 @@
 #ifndef FICHIER_H
 #define FICHIER_H
 
+/*FONCTIONS
+================================================================
+*/
+
 struct fichier {
   int inode;
   char * path;
   liste tag;
 };
 typedef struct fichier fichier;
+
 //Fonction de gestion de la liste des fichiers
 
 /*cree un fichier et le place dans la liste lFichier 
@@ -40,8 +55,6 @@ fichier *ajouterTag (fichier *f, liste t);
  */
 fichier *retirerTag (fichier *f, liste t);
 
-
-
 /*estTaguer verifie si la liste est taguer par tliste 
  *mais pas par nTListe, 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
@@ -60,7 +73,7 @@ fichier *changerPath (fichier *f, char *newPath);
 fichier *cpFichier (fichier *f, int newInode, char *newPath, liste lfichier);
 
 /*Affiche les fichiers de la liste*/
-void afficherListeFic (liste lFichier);
+void afficherListeFic (liste lFic);
 
 
 #endif

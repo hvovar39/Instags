@@ -1,10 +1,18 @@
-/*tag.c
+/*fichier.c
 Code faisant le liens fichier/tag
 Fonction lier aux commandes (addtags, untag, lt, ...)
-utilise gestionFichier.c et getsionTag.c
+utilise getsionTag.c
+*/
+
+/*INCLUDES
+================================================================
 */
 
 #include "fichier.h"
+
+/*FONCTIONS
+================================================================
+*/
 
 //Fonction de gestion de la liste des fichiers
 
@@ -71,6 +79,7 @@ fichier *ajouterTag (fichier *f, liste t){
 /*Supprime une liste de tag t au fichier f 
  *retourne un pointeur vers le fichier f
  */
+
 fichier *retirerTag (fichier *f, liste t){
   if (est_vide (t))
     return f;
@@ -92,6 +101,7 @@ fichier *retirerTag (fichier *f, liste t){
 /*estTaguer verifie si la liste est taguer par tliste 
  *mais pas par nTListe, 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
+
 int estTaguer (fichier *f, liste tListe, liste nTListe){
   if (tagPresent (f->tag, tListe) && tagAbsent (f->tag, nTListe))
     return 1;
@@ -122,6 +132,7 @@ liste getFichierTaguer (liste lfichier, liste tagPst, liste tagAbs){
 }
 
 /*modifie le chemin absolu vers le fichier */
+
 fichier *changerPath (fichier *f, char *newPath){
   f->path = realloc (f->path, sizeof (char) * (strlen (newPath) - 1));
   strcpy (f->path, newPath);
@@ -131,12 +142,15 @@ fichier *changerPath (fichier *f, char *newPath){
 /*creer un nouveau fichier avec les même tag que f 
  *mais un nouvel inode et un nouveau chemin 
  *retourn NULL si la copie n'a pas eu lieu*/
+
 fichier *cpFichier (fichier *f, int newInode, char *newPath, liste  lfichier){
   fichier *newf = creerFichier(newInode, newPath, lfichier);
   if (newf == NULL)
     return NULL;
   return ajouterTag(newf, f -> tag);
 }
+
+/*affiche les fichier de la liste lFic*/
 
 void afficherListeFic (liste lFic) {
   lFic = suivant (getTete (lFic));

@@ -4,11 +4,19 @@ Definition de la structure.
 Fonctions utile sur les listes.
 */
 
+/*INCLUDES
+================================================================
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <assert.h>
 #include "liste.h"
+
+/*FONCTIONS
+================================================================
+*/
 
 /* creer_liste cree la tête de la liste, 
  *retourn NULL si ça echoue, la liste l sinon */
@@ -74,14 +82,6 @@ int est_tete(liste l){
     return 0;
 }
 
-/*liste *supprimer_elementN (liste l) {
-  if (est_tete (l))
-    return NULL;
-  liste previous = l->precedent;
-  liste next = l->suivant;
-  previous->suivant = next;
-  next->pecedent = previous;*/
-  
 /*supprimer_element (l) supprime un element de la liste
  * on ne peut pas supprimer la tete
  * retourne un pointeur vers les donnees supprimees, 
@@ -165,6 +165,8 @@ liste precedent(liste l){
   return l->precedent;
 }
 
+/*retourne l'element associé a la valeur v */
+
 liste getElem (void * v, liste l){
   liste tmp = l -> suivant;
   if(est_tete(tmp))
@@ -177,11 +179,15 @@ liste getElem (void * v, liste l){
   return tmp;
 }
 
+/*getTete retourne la tete de la liste */
+
 liste getTete (liste l){
   while (!est_tete(l))
     l = l -> suivant;
   return l;
 }
+
+/*copie une liste */
 
 liste copier (liste l) {
   liste res = creer_liste();

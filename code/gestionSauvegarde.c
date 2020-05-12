@@ -1,13 +1,22 @@
-/*gestionFichier.c
+/*gestionSauvegarde.c
 Code lier à la gestions des fichiers.
 Ecriture et lecture des fichiers de sauvegardes.
+*/
+
+/*INCLUDES
+================================================================
 */
 
 #include "gestionSauvegarde.h"
 #define SEP ","
 
+/*FONCTIONS
+================================================================
+*/
+
 
 //sauvegarde la liste des tags et des fichiers dans fileT et fileF
+
 int save (liste lTag, liste lFile, char *fileT, char * fileF){
   FILE *ft;
   FILE *ff;
@@ -28,6 +37,7 @@ int save (liste lTag, liste lFile, char *fileT, char * fileF){
 
 //Sauvegarde la liste des tags dans le fichier f (nom du tag et noms des peres, separer par SEP et un saut de ligne apres chaque tag.
 //retourne 0 en cas d'échec et 1 si la sauvegarde à bien marché.
+
 int saveTag (liste lTag, FILE *f){
   char *result=malloc (1000*sizeof(char));
   result[0]='\0';
@@ -55,6 +65,7 @@ int saveTag (liste lTag, FILE *f){
 
 
 //Sauvegarde la liste des fichiers dans le fichier f
+
 int saveFile (liste lFile, FILE *f){
   char *result=malloc (100*sizeof(char));
   char buff[20];
@@ -85,6 +96,8 @@ int saveFile (liste lFile, FILE *f){
   return 1;
 }
 
+//charge les fichiers et les tags à partir des fichiers fileT et fileF
+
 int load (liste lTag, liste lFile, char *fileT, char *fileF){
   FILE *ft;
   FILE *ff;
@@ -102,7 +115,8 @@ int load (liste lTag, liste lFile, char *fileT, char *fileF){
   return 0;
 }
 
-//charge les fichiers et les tags à partir des fichiers fileT et fileF
+//charge les tags à partir d'un fichier 
+
 int loadTag (liste lTag, FILE *f){
   char *tab[50];
   for (int c = 0; c<50; c++){
@@ -136,6 +150,8 @@ int loadTag (liste lTag, FILE *f){
     free (tab[c]); 
   return 1;  
 }
+
+//charge des fichier à partir d'un fichier f
 
 int loadFile (liste lFile,liste lTag, FILE *f){
   char *tab[50];

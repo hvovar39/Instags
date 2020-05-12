@@ -1,3 +1,7 @@
+/*commande.c
+  Contient les commandes à utiliser dans la boucle d'interaction */
+
+
 /*INCLUDES
 ================================================================
 */

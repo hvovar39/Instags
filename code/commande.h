@@ -1,3 +1,9 @@
+/*commande.h
+
+/*INCLUDES
+================================================================
+*/
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -7,6 +13,12 @@
 
 #ifndef COMMANDE_H
 #define COMMANDE_H
+
+
+/*FONCTIONS
+================================================================
+*/
+
 
 
 int ls (char* argv[], size_t t, liste lTag, liste lFic);

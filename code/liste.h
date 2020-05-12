@@ -1,3 +1,13 @@
+/*liste.h
+Code lier aux listes generiques.
+Definition de la structure.
+Fonctions utile sur les listes.
+*/
+
+/*INCLUDES
+================================================================
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -5,6 +15,10 @@
 
 #ifndef LISTE_H
 #define LISTE_H
+
+/*FONCTIONS
+================================================================
+*/
 
 /*listes doublement chainees circulaires
  *chaque liste possede une tete qui, elle, ne contient pas de valeur
@@ -75,10 +89,13 @@ liste suivant(liste l);
 /*precedent(l) retourne l'element precedent de l*/
 liste precedent(liste l);
 
+/*retourne l'element associé a la valeur v */
 liste getElem (void * v, liste l);
 
+/*getTete retourne la tete de la liste */
 liste getTete (liste l);
 
+/*copie une liste */
 liste copier (liste l);
 
 #endif

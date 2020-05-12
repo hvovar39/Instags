@@ -1,3 +1,11 @@
+/*gestionTag.h
+Code lier à la gestions des tags.
+Creation, defenition de liens, ajout, deletion...
+*/
+
+/*INCLUDES
+================================================================
+*/
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -7,6 +15,11 @@
 
 #ifndef GESTIONTAG_H
 #define GESTIONTAG_H
+
+/*FONCTIONS
+================================================================
+*/
+
 
 struct tag {
   char * nom;
@@ -35,15 +48,14 @@ tag * supprimerPere (tag * orphelin, liste lostfather);
  *retourne un pointeur vers le tag orphelin
  */
 
+int tagPresent ( liste tFichier, liste present);
 /*tagPresent verifie si le fichier f  est taguer 
  *par la liste de tag present 
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagPresent ( liste tFichier, liste present);
 
+int tagAbsent (liste tFichier, liste absent);
 /*tagAbsent verifie si le fichier f ne possede pas absent
  *retourn n =/= 0 si le fichier respect les conditions, 0 sinon*/
-int tagAbsent (liste tFichier, liste absent);
-
 
 tag * getTag (char *nom, liste ltag);
 /*retourne le tag associé au nom */
