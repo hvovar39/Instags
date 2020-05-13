@@ -5,7 +5,7 @@ De ce faites, nous travaillons principalement avec 2 listes circulaires doubleme
 
 Les deux structures utilisé dans ces listes sont :
 -La strucutre tag, composé d'un nom (chaine de charactère) et d'une liste de tag père.
--La structure fichier, composé du chemin absolue du fichier, de sont numéros d'i-neud et d'une liste des tags qui lui sont associé.
+-La structure fichier, composé du nom du fichier, de sont numéros d'i-neud et d'une liste des tags qui lui sont associé.
 
 Les deux listes seront sauvegardé au format csv dans deux fichiers:
 -La liste des tags sera sauvegardé dans TAG.csv
