@@ -1,3 +1,6 @@
+**Lien de la video de presentation** 
+https://youtu.be/YI5w4EmbwWM
+
 Nous avons fait le choix d'associé les numéros d'e-noeud des fichiers avec une liste de tag leurs correspondants.
 De ce faites, nous travaillons principalement avec 2 listes circulaires doublement chainées:
 -La liste des tags, qui contient la totalité des tags créés.
