@@ -70,7 +70,7 @@ int addtag (char *argv[], size_t t, liste lTag, liste lFic) {
   int n;
   for (int i = 0; i<25; i++){
     tab [i] = malloc (sizeof (char) * 25);
-    tab[0] = '\0';
+    tab[i][0] = '\0';
   }
   if (stat (argv[1], &statbuf) == -1){
     printf ("Oups! Je n'ai pas trouver le fichier demandé.\n");
