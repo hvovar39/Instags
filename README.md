@@ -7,8 +7,8 @@ https://youtu.be/YI5w4EmbwWM
 
 **Nous avons tous les deux travailler sur ce projet, que ce soit au moment de la reflexion ou de l'implémentation.** 
 
-La base de notre fichier liste.c est inspiré de la correction d'un tp du semestre précedent que nous avont adapté 
-notre projet en y rajoutant toute les fonctions necessaire.
+La base de notre fichier liste.c est inspiré de la correction d'un tp du semestre précedent que nous avont adapté à
+notre projet en y rajoutant toutes les fonctions necessaires.
 
 Projet résalisé dans le cadre du cours de Système 2020 de la L3 informatique de l'université de Paris.
 
